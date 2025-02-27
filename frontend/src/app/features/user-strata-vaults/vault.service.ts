@@ -135,16 +135,18 @@ export class VaultService implements OnDestroy {
         }
         
         // If no vaults are loaded yet, try to load from cache again
-        try {
-          const cachedVaults = localStorage.getItem('cached_vaults');
-          if (cachedVaults) {
-            console.log('[VaultService] Using cached vaults due to API error');
-            const vaults = JSON.parse(cachedVaults) as StrataVault[];
-            this.vaultsSubject.next(vaults);
-            return of(vaults);
+        if (typeof window !== 'undefined') {
+          try {
+            const cachedVaults = localStorage.getItem('cached_vaults');
+            if (cachedVaults) {
+              console.log('[VaultService] Using cached vaults due to API error');
+              const vaults = JSON.parse(cachedVaults) as StrataVault[];
+              this.vaultsSubject.next(vaults);
+              return of(vaults);
+            }
+          } catch (cacheError) {
+            console.warn('[VaultService] Error reading from cache:', cacheError);
           }
-        } catch (cacheError) {
-          console.warn('[VaultService] Error reading from cache:', cacheError);
         }
         
         // If cache strategy fails, handle error normally
@@ -224,35 +226,39 @@ export class VaultService implements OnDestroy {
         this.vaultsSubject.next(updatedVaults);
         
         // Cache to localStorage for persistence
-        try {
-          localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
-          localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
-        } catch (err) {
-          console.warn('[VaultService] Could not cache vaults in localStorage:', err);
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
+            localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
+          } catch (err) {
+            console.warn('[VaultService] Could not cache vaults in localStorage:', err);
+          }
         }
         
         // After creating vault, try to initialize repository if gitIntegration is enabled
         if (vault.id && payload.gitIntegration) {
-          // Set a timeout to avoid overwhelming the API
-          const timeoutId = window.setTimeout(() => {
-            console.log(`[VaultService] Initializing GitHub repository for vault ${vault.id}`);
-            // Use the CLI command to initialize the repository via executeCommand
-            this.executeCommand({
-              command: 'create-vault',
-              args: [vault.id.toString()],
-              message: 'Initial repository creation'
-            }).subscribe({
-              next: (response) => {
-                console.log('[VaultService] Repository initialization response:', response);
-              },
-              error: (err) => {
-                console.error('[VaultService] Error initializing repository:', err);
-                // Non-critical error, don't propagate
-              }
-            });
-          }, 1000);
-          
-          this.timeoutIds.push(timeoutId);
+          // Set a timeout to avoid overwhelming the API - only in browser
+          if (typeof window !== 'undefined') {
+            const timeoutId = window.setTimeout(() => {
+              console.log(`[VaultService] Initializing GitHub repository for vault ${vault.id}`);
+              // Use the CLI command to initialize the repository via executeCommand
+              this.executeCommand({
+                command: 'create-vault',
+                args: [vault.id.toString()],
+                message: 'Initial repository creation'
+              }).subscribe({
+                next: (response) => {
+                  console.log('[VaultService] Repository initialization response:', response);
+                },
+                error: (err) => {
+                  console.error('[VaultService] Error initializing repository:', err);
+                  // Non-critical error, don't propagate
+                }
+              });
+            }, 1000);
+            
+            this.timeoutIds.push(timeoutId);
+          }
         }
       }),
       catchError((error) => {
@@ -487,35 +493,39 @@ export class VaultService implements OnDestroy {
   
   // Helper method to refresh a vault after an operation 
   private refreshVaultAfterOperation(vaultId: number): void {
-    // Set a timeout to avoid immediate refresh
-    const timeoutId = window.setTimeout(() => {
-      this.getVaultById(vaultId).subscribe({
-        next: (updatedVault) => {
-          // Update this vault in the current list
-          const currentVaults = this.vaultsSubject.value;
-          const updatedVaults = currentVaults.map(vault => 
-            vault.id === vaultId ? updatedVault : vault
-          );
-          
-          // Update subject with new data
-          this.vaultsSubject.next(updatedVaults);
-          
-          // Update cache
-          try {
-            localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
-            localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
-          } catch (err) {
-            console.warn('[VaultService] Could not update cache after operation:', err);
+    // Set a timeout to avoid immediate refresh - only in browser
+    if (typeof window !== 'undefined') {
+      const timeoutId = window.setTimeout(() => {
+        this.getVaultById(vaultId).subscribe({
+          next: (updatedVault) => {
+            // Update this vault in the current list
+            const currentVaults = this.vaultsSubject.value;
+            const updatedVaults = currentVaults.map(vault => 
+              vault.id === vaultId ? updatedVault : vault
+            );
+            
+            // Update subject with new data
+            this.vaultsSubject.next(updatedVaults);
+            
+            // Update cache
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
+                localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
+              } catch (err) {
+                console.warn('[VaultService] Could not update cache after operation:', err);
+              }
+            }
+          },
+          error: (err) => {
+            console.warn('[VaultService] Could not refresh vault after operation:', err);
+            // Non-critical error, don't propagate
           }
-        },
-        error: (err) => {
-          console.warn('[VaultService] Could not refresh vault after operation:', err);
-          // Non-critical error, don't propagate
-        }
-      });
-    }, 1000);
-    
-    this.timeoutIds.push(timeoutId);
+        });
+      }, 1000);
+      
+      this.timeoutIds.push(timeoutId);
+    }
   }
 
   unearthVault(
@@ -644,43 +654,49 @@ export class VaultService implements OnDestroy {
         console.log(`[VaultService] Vault ${id} successfully deleted`);
         
         // Update the cache in localStorage
-        try {
-          localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
-          localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
-        } catch (err) {
-          console.warn('[VaultService] Could not update cache after deletion:', err);
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('cached_vaults', JSON.stringify(updatedVaults));
+            localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
+          } catch (err) {
+            console.warn('[VaultService] Could not update cache after deletion:', err);
+          }
         }
         
-        // Fetch vaults from API to ensure we have the latest data
-        const timeoutId = window.setTimeout(() => {
-          this.http.get<StrataVault[]>(VAULTS.BASE, { headers }).subscribe({
-            next: (freshVaults) => {
-              // Sort vaults by update date
-              const sortedVaults = freshVaults.sort((a, b) => {
-                const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-                const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
-                return dateB - dateA;
-              });
-              
-              console.log(`[VaultService] Refreshed ${sortedVaults.length} vaults after deletion`);
-              this.vaultsSubject.next(sortedVaults);
-              
-              // Update cache with fresh data
-              try {
-                localStorage.setItem('cached_vaults', JSON.stringify(sortedVaults));
-                localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
-              } catch (err) {
-                console.warn('[VaultService] Could not update cache with fresh data:', err);
+        // Fetch vaults from API to ensure we have the latest data - only in browser
+        if (typeof window !== 'undefined') {
+          const timeoutId = window.setTimeout(() => {
+            this.http.get<StrataVault[]>(VAULTS.BASE, { headers }).subscribe({
+              next: (freshVaults) => {
+                // Sort vaults by update date
+                const sortedVaults = freshVaults.sort((a, b) => {
+                  const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+                  const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+                  return dateB - dateA;
+                });
+                
+                console.log(`[VaultService] Refreshed ${sortedVaults.length} vaults after deletion`);
+                this.vaultsSubject.next(sortedVaults);
+                
+                // Update cache with fresh data
+                if (typeof window !== 'undefined') {
+                  try {
+                    localStorage.setItem('cached_vaults', JSON.stringify(sortedVaults));
+                    localStorage.setItem('cached_vaults_timestamp', Date.now().toString());
+                  } catch (err) {
+                    console.warn('[VaultService] Could not update cache with fresh data:', err);
+                  }
+                }
+              },
+              error: (err) => {
+                console.warn('[VaultService] Could not refresh vaults after deletion:', err);
+                // Non-critical error, don't propagate
               }
-            },
-            error: (err) => {
-              console.warn('[VaultService] Could not refresh vaults after deletion:', err);
-              // Non-critical error, don't propagate
-            }
-          });
-        }, 1000);
-        
-        this.timeoutIds.push(timeoutId);
+            });
+          }, 1000);
+          
+          this.timeoutIds.push(timeoutId);
+        }
       }),
       catchError((error) => {
         console.error('[VaultService] Error deleting vault:', error);
@@ -710,6 +726,12 @@ export class VaultService implements OnDestroy {
 
   connectGithubAccount(): void {
     try {
+      // Skip in non-browser environments
+      if (typeof window === 'undefined') {
+        console.log('[VaultService] Cannot connect to GitHub in a server-side environment');
+        return;
+      }
+      
       // Use a more controlled approach to state management
       const safeAction = () => {
         try {
@@ -740,6 +762,12 @@ export class VaultService implements OnDestroy {
 
   handleGithubCallback(code: string, state: string): Observable<any> {
     console.log('Starting GitHub callback handling with code:', code?.substring(0, 5) + '...');
+    
+    // Skip state validation in server-side environments
+    if (typeof window === 'undefined') {
+      console.log('[VaultService] Running in server environment, skipping state validation');
+      return this.http.post<{token?: string, refreshToken?: string, user?: any}>(`${AUTH.GITHUB}`, { code, state });
+    }
     
     // Validate state parameter if present
     const storedState = localStorage.getItem('github_oauth_state');
@@ -923,34 +951,39 @@ export class VaultService implements OnDestroy {
     if (!token) {
       console.warn('[VaultService] No token from token storage service, trying fallbacks');
       
-      try {
-        // First try direct localStorage access - might work if token service has issues 
-        const rawToken = localStorage.getItem('auth_token');
-        
-        if (rawToken) {
-          console.log('[VaultService] Found token via direct localStorage access');
-          return rawToken;
+      // Only access browser storage if window is defined (client-side)
+      if (typeof window !== 'undefined') {
+        try {
+          // First try direct localStorage access - might work if token service has issues 
+          const rawToken = localStorage.getItem('auth_token');
+          
+          if (rawToken) {
+            console.log('[VaultService] Found token via direct localStorage access');
+            return rawToken;
+          }
+          
+          // Try the session storage as another fallback
+          const sessionToken = sessionStorage.getItem('auth_token');
+          if (sessionToken) {
+            console.log('[VaultService] Found token in session storage');
+            return sessionToken;
+          }
+          
+          // Check for GitHub tokens specifically - they might be stored differently
+          const githubToken = localStorage.getItem('github_token');
+          if (githubToken) {
+            console.log('[VaultService] Found GitHub token in localStorage');
+            return githubToken;
+          }
+        } catch (e) {
+          console.error('[VaultService] Error in token fallback logic:', e);
         }
-        
-        // Try the session storage as another fallback
-        const sessionToken = sessionStorage.getItem('auth_token');
-        if (sessionToken) {
-          console.log('[VaultService] Found token in session storage');
-          return sessionToken;
-        }
-        
-        // Check for GitHub tokens specifically - they might be stored differently
-        const githubToken = localStorage.getItem('github_token');
-        if (githubToken) {
-          console.log('[VaultService] Found GitHub token in localStorage');
-          return githubToken;
-        }
-        
-        // Log issue for debugging
-        console.error('[VaultService] Authentication token is missing, API call will fail');
-      } catch (e) {
-        console.error('[VaultService] Error in token fallback logic:', e);
+      } else {
+        console.log('[VaultService] Running in server-side environment, skipping browser storage checks');
       }
+      
+      // Log issue for debugging
+      console.error('[VaultService] Authentication token is missing, API call will fail');
     }
     
     return token || null;

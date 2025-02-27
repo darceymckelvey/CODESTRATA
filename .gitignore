@@ -4,6 +4,10 @@
 .env.*.local
 !.env.example
 
+# Include backend folder explicitly
+!backend/
+!backend/**
+
 # Dependencies
 node_modules/
 .pnp
