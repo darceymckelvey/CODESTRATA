@@ -1,0 +1,95 @@
+.strata-callback-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f5fa 0%, #e0eaf5 100%);
+  padding: 2rem;
+}
+
+.callback-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.callback-content {
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.excavation-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loading-message {
+  color: #4a5568;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.erosion-icon {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.erosion-icon mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+}
+
+.error-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.erosion-message {
+  color: #e53e3e;
+  background-color: #fff5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  border-left: 4px solid #e53e3e;
+}
+
+.stratum-redirect {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.action-button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

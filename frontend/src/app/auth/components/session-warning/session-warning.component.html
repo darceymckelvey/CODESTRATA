@@ -1,0 +1,19 @@
+<div *ngIf="showWarning" class="session-warning">
+  <mat-card appearance="outlined" class="session-warning-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar color="warn">timer</mat-icon>
+      <mat-card-title>Session Expiring Soon</mat-card-title>
+      <mat-card-subtitle>Your session will expire in {{ secondsRemaining | number: '1.0-0' }} seconds</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>You will be logged out automatically due to inactivity.</p>
+      <div class="countdown-progress">
+        <mat-progress-bar mode="determinate" [value]="secondsRemaining"></mat-progress-bar>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button color="warn" (click)="logout()">LOGOUT NOW</button>
+      <button mat-raised-button color="primary" (click)="extend()">STAY LOGGED IN</button>
+    </mat-card-actions>
+  </mat-card>
+</div> 

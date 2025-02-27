@@ -1,0 +1,428 @@
+---
+description: @Gwen.mdc when Gwen is requested
+globs: 
+alwaysApply: true
+---
+# Instructions
+
+During your interaction with the user, if you find anything reusable in this project (e.g. version of a library, model name), especially about a fix to a mistake you made or a correction you received, you should take note in the `Lessons` section in this file so you will not make the same mistake again.
+
+You should also use this file as a Scratchpad to organize your thoughts. Especially when you receive a new task, you should first review the content of the Scratchpad, clear old different task if necessary, first explain the task, and plan the steps you need to take to complete the task. You can use todo markers to indicate the progress, e.g.
+[X] Task 1
+[ ] Task 2
+
+Also update the progress of the task in the Scratchpad when you finish a subtask.
+Especially when you finished a milestone, it will help to improve your depth of task accomplishment to use the Scratchpad to reflect and plan.
+The goal is to help you maintain a big picture as well as the progress of the task. Always refer to the Scratchpad when you plan the next step.
+
+# Method of Operation
+
+As an AI assistant working on the Codestrata project, your working method should follow these principles:
+
+1. **Think Before Acting**: Always review the current state of the task and plan ahead before implementing changes.
+2. **Iterative Development**: Make small, testable changes rather than large refactors.
+3. **Self-Evolution**: Learn from mistakes and continuously improve your understanding of the system.
+4. **Comprehensive Testing**: Validate your changes with appropriate tests before considering a task complete.
+5. **Documentation**: Update comments and documentation as you modify code.
+6. **CHANGELOG**: creates or updates a chanelog so it can read it in a new chat and pick off more easily 
+
+For complex tasks, use the following workflow:
+1. Understand the problem thoroughly
+2. Research the codebase for relevant components
+3. Plan your approach with specific steps
+4. Implement changes methodically
+5. Test your changes
+6. Reflect on what you've learned
+
+# Project Information
+
+## Codestrata Architecture
+
+Codestrata is a modern web application with a separated frontend and backend architecture:
+
+### Frontend (Angular)
+- **Authentication System**:
+  - Login/Registration components
+  - JWT token-based auth with refresh mechanisms
+  - Auth guards for route protection
+  - HTTP interceptors for token injection
+  - GitHub OAuth integration
+  
+- **Core Components**:
+  - Navigation and routing
+  - User profile management
+  - Dashboard and data visualization
+  - Form validation and error handling
+  
+- **State Management**:
+  - Services for maintaining application state
+  - Reactive patterns with RxJS
+  - Local storage for persistent data
+
+### Backend (Node.js/Express)
+- **Authentication Services**:
+  - User registration and login endpoints
+  - Token generation and validation
+  - Refresh token mechanisms
+  - Password hashing and security
+  
+- **Data Models**:
+  - LithoProfile for user data
+  - StrataVault for data storage
+  - Sequelize ORM for database interactions
+  
+- **API Routes**:
+  - RESTful endpoints
+  - Protected routes requiring authentication
+  - Public routes for unauthorized access
+  
+- **Middleware**:
+  - Authentication verification
+  - Error handling
+  - Request logging
+  - CORS configuration
+
+## Development Environment
+- TypeScript for both frontend and backend
+- ESLint and Prettier for code formatting
+- Package management with npm
+- Git workflow with feature branches
+- CI/CD pipeline for automated testing and deployment
+
+## Project Structure
+```
+codestrata/
+├── frontend/              # Angular frontend application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── auth/      # Authentication components and services
+│   │   │   ├── core/      # Core services, guards, and interceptors
+│   │   │   ├── shared/    # Shared components, models, and utilities
+│   │   │   └── features/  # Feature modules
+│   │   ├── assets/        # Static assets
+│   │   └── environments/  # Environment configurations
+│   └── ...
+├── backend/               # Node.js/Express backend
+│   ├── src/
+│   │   ├── models/        # Sequelize models
+│   │   ├── modules/       # Feature modules (auth, users, etc.)
+│   │   ├── middleware/    # Express middleware
+│   │   ├── utils/         # Utility functions
+│   │   └── config/        # Configuration files
+│   └── ...
+├── docs/                  # Documentation
+└── ...
+```
+
+# Tools
+
+Note all the tools are in python. So in the case you need to do batch processing, you can always consult the python files and write your own script.
+
+## Screenshot Verification
+
+The screenshot verification workflow allows you to capture screenshots of web pages and verify their appearance using LLMs. The following tools are available:
+
+1. Screenshot Capture:
+```bash
+.venv/bin/python tools/screenshot_utils.py URL [--output OUTPUT] [--width WIDTH] [--height HEIGHT]
+```
+
+2. LLM Verification with Images:
+```bash
+.venv/bin/python tools/llm_api.py --prompt "Your verification question" --provider {openai|anthropic} --image path/to/screenshot.png
+```
+
+Example workflow:
+```python
+from screenshot_utils import take_screenshot_sync
+from llm_api import query_llm
+
+# Take a screenshot
+screenshot_path = take_screenshot_sync('https://example.com', 'screenshot.png')
+
+# Verify with LLM
+response = query_llm(
+    "What is the background color and title of this webpage?",
+    provider="openai",  # or "anthropic"
+    image_path=screenshot_path
+)
+print(response)
+```
+
+## LLM
+
+You always have an LLM at your side to help you with the task. For simple tasks, you could invoke the LLM by running the following command:
+```
+.venv/bin/python ./tools/llm_api.py --prompt "What is the capital of France?" --provider "anthropic"
+```
+
+The LLM API supports multiple providers:
+- OpenAI (default, model: gpt-4o)
+- Azure OpenAI (model: configured via AZURE_OPENAI_MODEL_DEPLOYMENT in .env file, defaults to gpt-4o-ms)
+- DeepSeek (model: deepseek-chat)
+- Anthropic (model: claude-3-sonnet-20240229)
+- Gemini (model: gemini-pro)
+- Local LLM (model: Qwen/Qwen2.5-32B-Instruct-AWQ)
+
+But usually it's a better idea to check the content of the file and use the APIs in the `tools/llm_api.py` file to invoke the LLM if needed.
+
+## Web browser
+
+You could use the `tools/web_scraper.py` file to scrape the web.
+```
+.venv/bin/python ./tools/web_scraper.py --max-concurrent 3 URL1 URL2 URL3
+```
+This will output the content of the web pages.
+
+## Search engine
+
+You could use the `tools/search_engine.py` file to search the web.
+```
+.venv/bin/python ./tools/search_engine.py "your search keywords"
+```
+This will output the search results in the following format:
+```
+URL: https://example.com
+Title: This is the title of the search result
+Snippet: This is a snippet of the search result
+```
+If needed, you can further use the `web_scraper.py` file to scrape the web page content.
+
+# Debugging Workflows
+
+## Authentication Flow Debugging
+When debugging authentication issues:
+1. Check token format and expiration in Local Storage
+2. Verify token validation in auth interceptor
+3. Review token refresh mechanisms
+4. Check server-side token validation
+5. Inspect database user record and token relationships
+6. Examine error responses from auth endpoints
+
+## Database Issues Debugging
+When debugging database issues:
+1. Check connection parameters
+2. Verify model definitions match database schema
+3. Inspect SQL queries being generated
+4. Test with minimal database operations
+5. Ensure transactions are properly managed
+
+## Frontend UI Debugging
+When debugging UI issues:
+1. Check component structure and templates
+2. Verify CSS selectors and styles
+3. Inspect reactive state updates
+4. Test component interactions
+5. Validate form controls and validators
+
+# Development Task Templates
+
+## Feature Implementation
+When implementing a new feature:
+1. Define the requirements and user stories
+2. Identify affected components in the architecture
+3. Design the solution with diagrams if necessary
+4. Plan the implementation steps
+5. Implement backend endpoints if needed
+6. Implement frontend components and services
+7. Add tests for new functionality
+8. Document the feature
+
+## Bug Fix
+When fixing a bug:
+1. Reproduce the issue consistently
+2. Identify the root cause through debugging
+3. Design a solution that addresses the cause
+4. Implement the fix
+5. Add tests to prevent regression
+6. Update documentation if necessary
+
+## Refactoring
+When refactoring code:
+1. Identify the code to be refactored
+2. Define the goal of the refactoring
+3. Create a plan with small, testable steps
+4. Implement changes with continuous testing
+5. Validate that behavior remains unchanged
+6. Document architectural changes
+
+# Lessons
+
+## User Specified Lessons
+
+### Authentication System
+- Authentication uses JWT with refresh token mechanism
+- Access tokens are validated on each request via auth.interceptor.ts
+- LithoProfile model contains user data including credentials and profile settings
+- Auth routes handle login, registration, and token refresh operations
+- The backend uses Sequelize for database operations
+- Token versioning is used to invalidate tokens when security requires it
+- Refresh tokens are stored in HTTP-only cookies for security
+- Access tokens have a short lifespan (15 minutes) while refresh tokens last longer (7 days)
+
+### API Patterns
+- All API responses follow a consistent format: { success, data, error }
+- Error responses include detailed messages for debugging but sanitized for production
+- Protected routes use the auth middleware to verify token validity
+- Pagination is implemented for list endpoints using limit and offset parameters
+
+### Database Operations
+- Sequelize is used as the ORM for database operations
+- Models use hooks for data validation and transformation
+- Transactions are used for operations that modify multiple records
+- Soft deletes are implemented for most entities to preserve data history
+
+## Cursor learned
+
+### Authentication Flow
+- Token validation fails if the token version in the database doesn't match the one in the token
+- When receiving 401 responses, the client should attempt to refresh the token before logging out
+- Authentication guards should handle token refresh before redirecting to login
+- OAuth requires proper callback URI configuration in both client and GitHub settings
+
+### Angular Patterns
+- Services should be provided at the appropriate module level for proper dependency injection
+- HTTP interceptors need to handle both request and response phases for proper authentication
+- RxJS operators like catchError and switchMap are crucial for handling asynchronous authentication flows
+- Route guards should return Observables for proper handling of asynchronous auth checks
+
+### Node.js Practices
+- Error handling middleware should catch all exceptions in async routes
+- JWT verification should check both signature and expiration
+- Password hashing should use bcrypt with appropriate salt rounds
+- Environment variables should be validated at startup for required auth configuration
+
+### Tool Usage
+- For search results, ensure proper handling of different character encodings (UTF-8) for international queries
+- Add debug information to stderr while keeping the main output clean in stdout for better pipeline integration
+- Use `gpt-4o` as the model name for OpenAI. It is the latest GPT model and has vision capabilities as well.
+- Use `claude-3-7-sonnet-thinking` as the model name for Claude. It is the latest Claude model and has vision capabilities as well.
+- When using Python tools, always activate the virtual environment first using `source .venv/bin/activate`
+
+# Multi-Agent Scratchpad
+
+## Background and Motivation
+
+The Codestrata project requires significant improvements to its authentication flow. The current implementation has issues with token validation and refresh mechanisms. This task involves understanding the root cause of the authentication failures and implementing a robust solution that ensures reliable user authentication across the application.
+
+The executor has access to three tools: invoking 3rd party LLM, invoking web browser, invoking search engine, which will aid in gathering relevant information and validating solutions.
+
+## Key Challenges and Analysis
+
+- Token versioning mechanisms are causing validation failures
+- Refresh tokens are not properly handled in HTTP-only cookies
+- Frontend is not properly handling 401 responses from the API
+- Token expiration times are not aligned between frontend and backend
+- Error handling in authentication flows lacks specific error codes
+
+## Verifiable Success Criteria
+
+- Users can successfully log in and stay logged in across sessions
+- Token refresh mechanism works silently without user intervention
+- Protected routes are properly secured and accessible only to authenticated users
+- Error messages are clear and helpful when authentication issues occur
+- Token versioning properly invalidates tokens when security requires it
+
+## High-level Task Breakdown
+
+1. Fix token versioning implementation
+2. Improve refresh token mechanism
+3. Enhance error handling in authentication flows
+4. Add comprehensive testing for authentication flows
+5. Document the authentication flow improvements
+
+## Current Status / Progress Tracking
+
+[X] Analyzed frontend authentication service
+[X] Examined backend profile model
+[X] Reviewed authentication routes
+[X] Identified token validation and refresh issues
+[ ] Implement fixes for authentication flow
+[ ] Test authentication with proper token handling
+
+## Next Steps and Action Items
+
+1. Update the auth.interceptor.ts to properly handle 401 responses
+2. Modify backend auth middleware to validate token versions
+3. Update the refresh token implementation to use HTTP-only cookies
+4. Add specific error codes for different authentication failure scenarios
+5. Implement silent refresh for expired tokens
+
+## Executor's Feedback or Assistance Requests
+
+The executor is currently working on understanding the token validation logic in the backend. The LithoProfile model includes a tokenVersion field, but it's not clear how this is used during token validation. Need to examine the middleware that validates tokens to understand how to properly fix the version validation issue.
+
+# Command Templates
+
+## Backend
+
+### Start Backend Server
+```bash
+cd backend && npm run start:dev
+```
+
+### Run Backend Tests
+```bash
+cd backend && npm test
+```
+
+### Database Migration
+```bash
+cd backend && npm run migration:run
+```
+
+## Frontend
+
+### Start Angular Development Server
+```bash
+cd frontend && ng serve
+```
+
+### Build Production Frontend
+```bash
+cd frontend && ng build --prod
+```
+
+### Run Frontend Tests
+```bash
+cd frontend && ng test
+```
+
+## Development
+
+### Install Dependencies
+```bash
+npm install
+```
+
+### Run Linting
+```bash
+npm run lint
+```
+
+### Run Full Stack Locally
+```bash
+npm run dev
+```
+
+## Tool Usage
+
+### Activate Python Environment
+```bash
+source .venv/bin/activate
+```
+
+### Use Search Engine
+```bash
+python ./tools/search_engine.py "your search keywords"
+```
+
+### Web Scraping
+```bash
+python ./tools/web_scraper.py URL
+```
+
+### LLM Query
+```bash
+python ./tools/llm_api.py --prompt "Your question?" --provider "openai"
+``` 

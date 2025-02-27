@@ -1,0 +1,225 @@
+<div class="vaults-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
+    <p>Excavating vaults...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container mat-elevation-z2">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="accent" (click)="retryExcavation()">
+      <mat-icon>refresh</mat-icon>
+      Retry Excavation
+    </button>
+  </div>
+
+  <!-- Content State -->
+  <ng-container *ngIf="!isLoading && !error">
+    <!-- Header Section with Info Card -->
+    <div class="vaults-header-container">
+      <div class="vaults-header">
+        <h1>Your Geological Vaults</h1>
+        <div class="header-actions">
+          <button mat-raised-button color="primary" (click)="createVault()" class="create-button">
+            <mat-icon>add</mat-icon>
+            Create New Vault
+          </button>
+          
+          <button mat-raised-button color="accent" *ngIf="!isGithubConnected" (click)="connectGithub()">
+            <mat-icon>link</mat-icon>
+            Connect GitHub
+          </button>
+          
+          <span *ngIf="isGithubConnected" class="github-connected">
+            <mat-icon color="primary">check_circle</mat-icon>
+            GitHub Connected
+          </span>
+        </div>
+      </div>
+      
+      <!-- Info Card -->
+      <mat-card class="info-card mat-elevation-z2">
+        <mat-card-content>
+          <h2>Welcome to CodeStrata</h2>
+          <p>
+            CodeStrata helps you visualize your code as geological layers. Create vaults to store your code artifacts,
+            fossilize changes to preserve them, and explore the strata of your development history. Excavate code structures,
+            shift between different strata, and uplift your codebase quality with our geological tools.
+          </p>
+          <div class="quick-tips">
+            <h3>Quick Tips:</h3>
+            <ul>
+              <li><strong>Create a Vault:</strong> Start by creating a new lithosphere for your code</li>
+              <li><strong>Deposit Artifacts:</strong> Upload code files into your geological formations</li>
+              <li><strong>Fossilize:</strong> Preserve your code at important development milestones</li>
+              <li><strong>Excavate Code:</strong> Analyze patterns and structures within your strata</li>
+              <li><strong>Stratum Shift:</strong> Move between different layers of your code</li>
+            </ul>
+          </div>
+          <div *ngIf="!isGithubConnected" class="backend-status-warning">
+            <mat-icon color="warn">warning</mat-icon>
+            <p>Backend connection issue detected. Please ensure the backend server is running.</p>
+            <button mat-button color="primary" (click)="checkGithubConnection()">
+              <mat-icon>refresh</mat-icon> Check Connection
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Vaults Grid -->
+    <div class="vaults-grid" *ngIf="vaults.length > 0">
+      <mat-card *ngFor="let vault of vaults" class="vault-card mat-elevation-z2">
+        <mat-card-header>
+          <div class="vault-header-content">
+            <mat-icon mat-card-avatar class="vault-icon">folder</mat-icon>
+            <div class="vault-titles">
+              <mat-card-title>{{ vault.name }}</mat-card-title>
+              <mat-card-subtitle>
+                <span class="subtitle-item">
+                  <mat-icon class="mini-icon">update</mat-icon>
+                  {{ vault.updatedAt | date:'short' }}
+                </span>
+                <span *ngIf="vault.currentBranch" class="subtitle-item">
+                  <mat-icon class="mini-icon">terrain</mat-icon>
+                  Stratum: {{ vault.currentBranch }}
+                </span>
+              </mat-card-subtitle>
+            </div>
+          </div>
+          <div class="vault-status">
+            <span class="status-badge" [ngClass]="{'active': true}">
+              Active
+            </span>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p class="vault-description">{{ vault.description || 'No description provided' }}</p>
+          
+          <!-- Artifacts Section with count and preview -->
+          <div class="content-section">
+            <div class="section-header">
+              <h3>Artifacts</h3>
+              <span class="count-badge">{{ vault.artifacts?.length || 0 }}</span>
+            </div>
+            <div class="artifacts-section" *ngIf="vault.artifacts?.length">
+              <div class="artifact-list">
+                <div *ngFor="let artifact of vault.artifacts?.slice(0, 3) || []" class="artifact-item">
+                  <mat-icon [ngClass]="getFileIconClass(artifact)">
+                    {{ getFileIcon(artifact) }}
+                  </mat-icon>
+                  <span class="artifact-name">{{ artifact }}</span>
+                </div>
+                <div *ngIf="vault.artifacts && vault.artifacts.length > 3" class="more-artifacts">
+                  +{{ vault.artifacts.length - 3 }} more artifacts
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!vault.artifacts?.length" class="empty-section">
+              <p>No artifacts have been deposited yet</p>
+              <button mat-stroked-button color="primary" (click)="fileInput.click()">
+                <mat-icon>upload_file</mat-icon>
+                Upload Files
+              </button>
+            </div>
+          </div>
+
+          <!-- Strata Section -->
+          <div class="content-section">
+            <div class="section-header">
+              <h3>Strata</h3>
+              <span class="count-badge">{{ vault.strata?.length || 0 }}</span>
+            </div>
+            <div class="strata-section" *ngIf="vault.strata?.length">
+              <div class="strata-list">
+                <div *ngFor="let stratum of vault.strata?.slice(0, 3) || []" class="stratum-item">
+                  <mat-icon>layers</mat-icon>
+                  <span>{{ stratum }}</span>
+                </div>
+                <div *ngIf="vault.strata && vault.strata.length > 3" class="more-strata">
+                  +{{ vault.strata.length - 3 }} more strata
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!vault.strata?.length" class="empty-section">
+              <p>No strata have been created yet</p>
+              <button mat-stroked-button color="accent" (click)="stratumShift(vault.id, 'new-stratum')">
+                <mat-icon>call_split</mat-icon>
+                Create Stratum
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        <mat-divider></mat-divider>
+        
+        <mat-card-actions>
+          <!-- File Upload Button with progress indicator -->
+          <div class="upload-button-container">
+            <button mat-button color="primary" (click)="fileInput.click()" [disabled]="uploading" class="action-button">
+              <mat-icon>upload</mat-icon>
+              {{ uploading ? 'Depositing...' : 'Deposit Artifacts' }}
+            </button>
+            <mat-progress-bar *ngIf="uploading" mode="indeterminate" class="upload-progress"></mat-progress-bar>
+            <input #fileInput type="file" multiple (change)="onFileSelected($event, vault.id)" style="display: none">
+          </div>
+          
+          <!-- Fossilize Button (Save/Commit) -->
+          <button mat-button color="primary" (click)="fossilize(vault.id, 'Fossilizing changes')" class="action-button">
+            <mat-icon>layers</mat-icon>
+            Fossilize
+          </button>
+          
+          <!-- GitHub Repository Button -->
+          <button mat-button color="accent" (click)="createGithubRepository(vault.id)" class="action-button">
+            <mat-icon>code</mat-icon>
+            GitHub Repo
+          </button>
+          
+          <!-- Branch/Create Stratum Button with custom dialog -->
+          <button mat-button color="accent" (click)="stratumShift(vault.id, 'new-stratum')" class="action-button">
+            <mat-icon>call_split</mat-icon>
+            Shift Layers
+          </button>
+          
+          <!-- View Details Button -->
+          <button mat-button color="basic" [routerLink]="['/vault', vault.id]" class="action-button">
+            <mat-icon>visibility</mat-icon>
+            View Strata
+          </button>
+          
+          <!-- Delete Button with confirmation -->
+          <button mat-button color="warn" (click)="erodeVault(vault.id)" class="action-button">
+            <mat-icon>delete_forever</mat-icon>
+            Erode Vault
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Empty State with more prominent CTA -->
+    <div *ngIf="vaults.length === 0" class="empty-state">
+      <div class="empty-state-icon">
+        <mat-icon>layers</mat-icon>
+      </div>
+      <h2>No Geological Vaults Discovered</h2>
+      <p class="empty-description">
+        Create your first StrataVault to begin preserving and visualizing your code artifacts as geological layers.
+        Each vault represents a repository where you can store, organize, and track code changes over time.
+      </p>
+      <div class="empty-state-actions">
+        <button mat-raised-button color="primary" (click)="createVault()" class="begin-button">
+          <mat-icon>add</mat-icon>
+          Begin Excavation
+        </button>
+        <button mat-stroked-button color="accent" *ngIf="!isGithubConnected" (click)="connectGithub()">
+          <mat-icon>link</mat-icon>
+          Connect GitHub Repository
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>

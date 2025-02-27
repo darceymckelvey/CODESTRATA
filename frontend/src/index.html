@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CodeStrata - Explore the geological layers of your code</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CodeStrata helps developers visualize, organize, and collaborate on code through geological metaphors.">
+  <meta name="theme-color" content="#2d3f63">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+  
+  <!-- Apply color theme before the app loads to prevent flash of unstyled content -->
+  <style>
+    :root {
+      --strata-primary: #2d3f63;
+      --strata-primary-light: #4c5f83;
+      --strata-primary-dark: #1e2c4a;
+      --strata-accent: #3e8ed0;
+      --strata-accent-light: #5ba8e7;
+      --strata-accent-dark: #2a70a8;
+      --strata-warn: #e53935;
+      --strata-warn-light: #f44336;
+      --strata-warn-dark: #c62828;
+      --strata-bg-light: #f8fafc;
+      --strata-bg-dark: #1a1f36;
+      --strata-text-primary: #2c3e50;
+      --strata-text-secondary: #64748b;
+      --strata-text-white: #ffffff;
+      
+      /* Spacing variables */
+      --space-2: 0.5rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      
+      /* Border radius */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 1rem;
+      --radius-2xl: 1.5rem;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      /* Transitions */
+      --transition-all: all 0.3s ease;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--strata-bg-light);
+      color: var(--strata-text-primary);
+    }
+    
+    /* Splash screen styles */
+    .app-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--strata-primary-dark) 0%, var(--strata-primary) 100%);
+      z-index: 999;
+      transition: opacity 0.5s ease-out;
+      overflow: hidden;
+    }
+    
+    .app-loading-logo {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      font-family: 'Fira Code', monospace;
+      margin-bottom: 2.5rem;
+      position: relative;
+      padding-bottom: 0.75rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .app-loading-logo .code-part {
+      color: white;
+    }
+    
+    .app-loading-logo .strata-part {
+      color: var(--strata-accent);
+    }
+    
+    .app-loading-message {
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.5px;
+      font-size: 1rem;
+      position: relative;
+      padding-left: 5px;
+      opacity: 0;
+      animation: fadeInUp 0.5s ease forwards 0.5s;
+    }
+    
+    /* Animated strata layers */
+    .strata-layer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    
+    .strata-layer-1 {
+      bottom: 0px;
+      background-color: var(--strata-accent);
+      animation: strataSlide 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards 0.1s;
+    }
+    
+    .strata-layer-2 {
+      bottom: 6px;
+      background-color: var(--strata-accent-light);
+      animation: strataSlide 1s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards 0.3s;
+    }
+    
+    .strata-layer-3 {
+      bottom: 12px;
+      background-color: var(--strata-accent-dark);
+      animation: strataSlide 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards 0.5s;
+    }
+    
+    @keyframes strataSlide {
+      to { transform: scaleX(1); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Pulsing background elements */
+    .bg-element {
+      position: absolute;
+      background-color: rgba(255,255,255,0.03);
+      border-radius: 20%;
+      pointer-events: none;
+    }
+    
+    .bg-element:nth-child(1) {
+      top: 15%;
+      left: 10%;
+      width: 300px;
+      height: 300px;
+      animation: pulse 8s infinite alternate;
+    }
+    
+    .bg-element:nth-child(2) {
+      bottom: 20%;
+      right: 15%;
+      width: 250px;
+      height: 250px;
+      animation: pulse 10s infinite alternate-reverse;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.02;
+      }
+      100% {
+        transform: scale(1.2) rotate(15deg);
+        opacity: 0.05;
+      }
+    }
+  </style>
+</head>
+<body class="mat-typography">
+  <!-- Splash Screen -->
+  <div class="app-loading" id="app-loading">
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    
+    <div class="app-loading-logo">
+      <span class="code-part">CODE</span><span class="strata-part">STRATA</span>
+      <div class="strata-layer strata-layer-1"></div>
+      <div class="strata-layer strata-layer-2"></div>
+      <div class="strata-layer strata-layer-3"></div>
+    </div>
+    
+    <div class="app-loading-message">Excavating geological code layers...</div>
+  </div>
+  
+  <app-root></app-root>
+  
+  <script>
+    // Indicate browser environment 
+    if (typeof window !== 'undefined') {
+      window.__isBrowser = true;
+      console.log('Browser environment confirmed, initializing auth state');
+    }
+    
+    // Display splash screen for a minimum duration then fade out
+    var splashTimer;
+    var minimumDisplayTime = 2000; // 2 seconds minimum display time
+    
+    function removeSplashScreen() {
+      var splash = document.getElementById('app-loading');
+      if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(function() {
+          splash.style.display = 'none';
+        }, 500);
+      }
+    }
+    
+    // Start the timer when the page loads
+    splashTimer = setTimeout(removeSplashScreen, minimumDisplayTime);
+    
+    // Also remove when app is fully loaded (but respect minimum time)
+    window.addEventListener('load', function() {
+      // If we've already waited the minimum time, remove immediately
+      if (Date.now() - performance.timing.navigationStart >= minimumDisplayTime) {
+        removeSplashScreen();
+      }
+      // Otherwise let the timer handle it
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+@import 'custom-theme.scss';
+@import 'tailwind.css';
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+/**
+ * CodeStrata Global Styles
+ * A geological approach to code styling with Tailwind CSS
+ */
+
+/* Base HTML overrides that shouldn't be handled by Tailwind */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Theme transitions for dark mode */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Global focus states */
+*:focus-visible {
+  outline: 2px solid var(--strata-primary);
+  outline-offset: 2px;
+}
+
+/* Angular component specific overrides */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-menu-panel {
+  @apply border border-slate-200 dark:border-strata-gray-700 dark:bg-strata-gray-800;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  @apply dark:bg-strata-gray-800 dark:text-strata-gray-100;
+}
+
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: var(--strata-success);
+    --mat-snack-bar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+  }
+  
+  &.error-snackbar {
+    --mdc-snackbar-container-color: var(--strata-danger);
+    --mat-snack-bar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+  }
+  
+  &.info-snackbar {
+    --mdc-snackbar-container-color: var(--strata-info);
+    --mat-snack-bar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+  }
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-light);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--strata-secondary);
+  border-radius: 8px;
+  border: 3px solid var(--surface-light);
+  
+  &:hover {
+    background: var(--strata-primary);
+  }
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--strata-gray-800);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--strata-gray-600);
+  border: 3px solid var(--strata-gray-800);
+  
+  &:hover {
+    background: var(--strata-gray-500);
+  }
+}
+
+/* Form elements not handled by Angular Material */
+select:not([class^='mat-']) {
+  @apply form-control appearance-none bg-white dark:bg-strata-gray-800 pr-8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+}
+
+textarea:not([class^='mat-']) {
+  @apply form-control min-h-[100px] resize-y;
+}
+
+/* Editor styles */
+.editor-container {
+  @apply border border-slate-200 dark:border-strata-gray-700 rounded-lg overflow-hidden;
+  
+  .editor-toolbar {
+    @apply bg-slate-100 dark:bg-strata-gray-800 border-b border-slate-200 dark:border-strata-gray-700 p-2 flex items-center gap-2;
+  }
+  
+  .editor-content {
+    @apply bg-white dark:bg-strata-gray-800 p-4 font-mono text-sm;
+    min-height: 200px;
+  }
+  
+  .editor-footer {
+    @apply bg-slate-50 dark:bg-strata-gray-800 border-t border-slate-200 dark:border-strata-gray-700 p-2 flex justify-between items-center;
+  }
+}
+
+/* Code syntax highlighting */
+pre, code {
+  @apply font-mono text-sm;
+}
+
+code:not([class*="language-"]) {
+  @apply bg-slate-100 dark:bg-strata-gray-800 text-strata-primary dark:text-strata-primary-light px-1.5 py-0.5 rounded;
+}
+
+pre {
+  @apply bg-slate-900 text-slate-50 p-4 rounded-lg overflow-x-auto;
+}
+
+pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  a {
+    text-decoration: underline;
+    color: #000 !important;
+  }
+  
+  .page-break {
+    page-break-before: always;
+  }
+}

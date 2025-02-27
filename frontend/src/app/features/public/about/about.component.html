@@ -1,0 +1,83 @@
+<div class="about-container">
+  <section class="hero-section">
+    <h1 class="text-shadow">About CodeStrata</h1>
+    <p class="hero-description">
+      Explore the geological layers of your codebase, unearth hidden patterns, and understand code evolution.
+    </p>
+  </section>
+
+  <section class="mission-section">
+    <div class="mission-content">
+      <h2>Our Mission</h2>
+      <p>
+        CodeStrata was founded on the principle that complex codebases share many similarities with geological formations. 
+        Layers of code are built over time, with each layer serving a distinct purpose and containing artifacts of its development history.
+      </p>
+      <p>
+        Our mission is to provide developers with powerful tools to visualize, understand, and collaborate on code using geological metaphors. 
+        By making the invisible structures of code visible through geological mapping, we empower teams to make better architectural decisions.
+      </p>
+    </div>
+    <div class="mission-image">
+      <img src="assets/images/code-layers.svg" alt="Code Strata Layers" class="responsive-img" onerror="this.src='assets/images/code-layers.png'; this.onerror=null;">
+    </div>
+  </section>
+
+  <section class="geology-terms-section">
+    <h2>Geological Concepts in Code</h2>
+    <p class="section-description">
+      We employ geological terminology to help developers visualize and understand the structure and evolution of code.
+    </p>
+
+    <div class="geology-grid">
+      <mat-card class="geology-card" *ngFor="let concept of geologicalConcepts">
+        <div class="concept-header">
+          <h3>{{ concept.name }}</h3>
+          <mat-icon color="primary">{{ concept.icon }}</mat-icon>
+        </div>
+        <div class="concept-description">
+          <p>{{ concept.description }}</p>
+        </div>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <h2>Our Team</h2>
+    <p class="section-description">
+      The CodeStrata team brings together experts in software architecture, data visualization, and geology.
+    </p>
+
+    <div class="team-grid">
+      <mat-card class="team-card" *ngFor="let member of teamMembers">
+        <div class="team-member-image">
+          <img [src]="member.image" [alt]="member.name" onerror="this.src='assets/images/team/default-avatar.png'; this.onerror=null;">
+        </div>
+        <div class="team-member-info">
+          <h3>{{ member.name }}</h3>
+          <p class="member-role">{{ member.role }}</p>
+          <p class="member-bio">{{ member.bio }}</p>
+        </div>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <mat-card class="cta-card">
+      <mat-card-content>
+        <h2>Ready to Explore Your Code Strata?</h2>
+        <p>Join thousands of developers who use CodeStrata to visualize and understand their codebases.</p>
+        <div class="cta-buttons">
+          <a mat-raised-button color="primary" routerLink="/register">
+            <mat-icon>person_add</mat-icon>
+            Create Free Account
+          </a>
+          <a mat-stroked-button routerLink="/login">
+            <mat-icon>login</mat-icon>
+            Sign In
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

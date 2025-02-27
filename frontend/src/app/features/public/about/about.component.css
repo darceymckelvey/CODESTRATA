@@ -1,0 +1,311 @@
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--strata-primary) 20%, 
+    var(--strata-accent) 50%, 
+    var(--strata-primary) 80%, 
+    transparent 100%
+  );
+  border-radius: 3px;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  color: var(--strata-primary);
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Mission Section */
+.mission-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 5rem;
+  align-items: center;
+}
+
+.mission-content h2 {
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--strata-primary);
+}
+
+.mission-content p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.mission-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Geology Terms Section */
+.geology-terms-section {
+  margin-bottom: 5rem;
+}
+
+.geology-terms-section h2 {
+  font-size: 2.25rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--strata-primary);
+}
+
+.section-description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.geology-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.geology-card {
+  height: 100%;
+  border-left: 4px solid var(--strata-accent);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.6s ease-out backwards;
+}
+
+.geology-card:nth-child(1) { animation-delay: 0.1s; }
+.geology-card:nth-child(2) { animation-delay: 0.2s; }
+.geology-card:nth-child(3) { animation-delay: 0.3s; }
+.geology-card:nth-child(4) { animation-delay: 0.4s; }
+.geology-card:nth-child(5) { animation-delay: 0.5s; }
+.geology-card:nth-child(6) { animation-delay: 0.6s; }
+.geology-card:nth-child(7) { animation-delay: 0.7s; }
+.geology-card:nth-child(8) { animation-delay: 0.8s; }
+
+.geology-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(45, 63, 99, 0.1);
+}
+
+.concept-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: rgba(62, 142, 208, 0.05);
+  border-bottom: 1px solid rgba(62, 142, 208, 0.1);
+}
+
+.concept-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--strata-primary);
+}
+
+.concept-description {
+  padding: 1.5rem;
+}
+
+.concept-description p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Team Section */
+.team-section {
+  margin-bottom: 5rem;
+}
+
+.team-section h2 {
+  font-size: 2.25rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--strata-primary);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(45, 63, 99, 0.1);
+}
+
+.team-member-image {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.team-member-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-member-info {
+  padding: 1.5rem;
+}
+
+.team-member-info h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: var(--strata-primary);
+}
+
+.member-role {
+  font-size: 1rem;
+  color: var(--strata-accent);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.member-bio {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CTA Section */
+.cta-section {
+  margin-bottom: 3rem;
+}
+
+.cta-card {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--strata-primary-dark) 0%, var(--strata-primary) 100%);
+  color: white;
+  border-radius: 8px;
+}
+
+.cta-card h2 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.cta-card p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-buttons a {
+  min-width: 200px;
+  height: 48px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+  .mission-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .mission-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-description {
+    font-size: 1.1rem;
+  }
+  
+  .mission-content h2, .geology-terms-section h2, .team-section h2 {
+    font-size: 2rem;
+  }
+  
+  .geology-grid, .team-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-card h2 {
+    font-size: 1.75rem;
+  }
+  
+  .cta-card p {
+    font-size: 1rem;
+  }
+}

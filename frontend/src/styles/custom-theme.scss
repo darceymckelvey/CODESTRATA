@@ -1,0 +1,204 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use 'sass:map';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define custom palettes for our geological theme
+// Deep slate blue (like bedrock) for primary
+$strata-primary: (
+  50: #e9edf5,
+  100: #c7d0e5,
+  200: #a2b1d4,
+  300: #7d91c2,
+  400: #6079b5,
+  500: #4362a7,
+  600: #3c5a9f,
+  700: #334f96,
+  800: #2d468d,
+  900: #22347d,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Bright blue (like aquamarine) for accent
+$strata-accent: (
+  50: #e6f3fb,
+  100: #c0e1f5,
+  200: #97cdef,
+  300: #6db9e8,
+  400: #4eabe3,
+  500: #3e8ed0,
+  600: #3582c9,
+  700: #2a71c1,
+  800: #2061b9,
+  900: #0d44ab,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: rgba(0, 0, 0, 0.87),
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Red (like ruby) for warnings
+$strata-warn: (
+  50: #fbe7e9,
+  100: #f5c2c7,
+  200: #ee9aa2,
+  300: #e7727d,
+  400: #e15361,
+  500: #dc3545,
+  600: #d8303e,
+  700: #d32836,
+  800: #ce222e,
+  900: #c5161f,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Create the palettes
+$frontend-primary: mat.define-palette($strata-primary, 600);
+$frontend-accent: mat.define-palette($strata-accent, 500);
+$frontend-warn: mat.define-palette($strata-warn, 600);
+
+// Create custom typography config
+$custom-typography: mat.define-typography-config(
+  $font-family: '"Fira Code", monospace',
+  $headline-1: mat.define-typography-level(72px, 80px, 300, $letter-spacing: -1.5px),
+  $headline-2: mat.define-typography-level(48px, 56px, 300, $letter-spacing: -0.5px),
+  $headline-3: mat.define-typography-level(40px, 48px, 400),
+  $headline-4: mat.define-typography-level(32px, 40px, 400),
+  $headline-5: mat.define-typography-level(24px, 32px, 400),
+  $headline-6: mat.define-typography-level(20px, 28px, 500),
+  $subtitle-1: mat.define-typography-level(18px, 28px, 400),
+  $subtitle-2: mat.define-typography-level(16px, 24px, 500),
+  $body-1: mat.define-typography-level(16px, 24px, 400),
+  $body-2: mat.define-typography-level(14px, 20px, 400),
+  $button: mat.define-typography-level(15px, 24px, 500),
+  $caption: mat.define-typography-level(12px, 16px, 400),
+);
+
+// Create the light theme
+$frontend-light-theme: mat.define-light-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+  typography: $custom-typography,
+  density: 0
+));
+
+// Create the dark theme
+$frontend-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+  typography: $custom-typography,
+  density: 0
+));
+
+// Include theme styles for core and each component
+@include mat.all-component-themes($frontend-light-theme);
+
+// Dark theme
+.dark-theme {
+  @include mat.all-component-colors($frontend-dark-theme);
+}
+
+// Custom CSS Variables for consistent theming - aligned with Tailwind values
+:root {
+  // Brand Colors - Geological Theme
+  --strata-primary: #2d3f63;
+  --strata-primary-light: #4c6085;
+  --strata-primary-dark: #1e2c4a;
+  --strata-secondary: #5d6b7c;
+  --strata-accent: #3e8ed0;
+  --strata-success: #38b677;
+  --strata-warning: #eab308;
+  --strata-danger: #dc3545;
+  --strata-info: #3d9cf5;
+  
+  // Text Colors
+  --text-primary: #212b36;
+  --text-secondary: #4e5d6c;
+  --text-tertiary: #637381;
+  --text-white: #ffffff;
+  
+  // Background/Surface Colors
+  --surface-light: #f8fafc;
+  --surface-dark: #1a202c;
+  --surface-white: #ffffff;
+  --surface-border: #e2e8f0;
+  
+  // Material Design Colors (from palette)
+  --mat-primary: #{mat.get-color-from-palette($frontend-primary, 600)};
+  --mat-primary-light: #{mat.get-color-from-palette($frontend-primary, 300)};
+  --mat-primary-dark: #{mat.get-color-from-palette($frontend-primary, 900)};
+  --mat-accent: #{mat.get-color-from-palette($frontend-accent, 500)};
+  --mat-accent-light: #{mat.get-color-from-palette($frontend-accent, 300)};
+  --mat-accent-dark: #{mat.get-color-from-palette($frontend-accent, 700)};
+  --mat-warn: #{mat.get-color-from-palette($frontend-warn, 600)};
+  
+  // Shadow Tokens
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  // Spacing Tokens
+  --space-xxs: 0.25rem;  // 4px
+  --space-xs: 0.5rem;    // 8px
+  --space-sm: 0.75rem;   // 12px
+  --space-md: 1rem;      // 16px
+  --space-lg: 1.5rem;    // 24px
+  --space-xl: 2rem;      // 32px
+  --space-xxl: 3rem;     // 48px
+  
+  // Border Radius
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+  
+  // Transitions
+  --transition-all: all 0.2s ease;
+  --transition-colors: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  --transition-transform: transform 0.2s ease;
+}
+

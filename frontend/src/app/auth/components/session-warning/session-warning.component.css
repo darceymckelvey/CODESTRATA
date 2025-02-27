@@ -1,0 +1,43 @@
+.session-warning {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 400px;
+  animation: slide-in 0.3s ease-out;
+}
+
+.session-warning-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid #f44336; /* Warning color */
+}
+
+.countdown-progress {
+  margin-top: 16px;
+}
+
+mat-card-subtitle {
+  color: #f44336; /* Warning color */
+  font-weight: 500;
+}
+
+@keyframes slide-in {
+  from { 
+    transform: translateY(100px); 
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1;
+  }
+}
+
+/* For dark theme compatibility */
+:host-context(.dark-theme) .session-warning-card {
+  background-color: #424242;
+  color: #ffffff;
+}
+
+:host-context(.dark-theme) mat-card-subtitle {
+  color: #ff8a80; /* Lighter red for dark theme */
+} 

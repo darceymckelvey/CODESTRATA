@@ -1,0 +1,3 @@
+// Home and profile as standalone components
+  { path: "home", loadComponent: () => import("./features/home/home.component").then(m => m.HomeComponent) },
+  { path: "profile", loadComponent: () => import("./features/home/profile.component").then(m => m.ProfileComponent), canActivate: [AuthGuard] },

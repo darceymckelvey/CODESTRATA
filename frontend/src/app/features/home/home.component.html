@@ -1,0 +1,196 @@
+<div class="home-container">
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <h1 class="text-shadow">Welcome {{ username ? ', ' + username : ' to Codestrata' }}</h1>
+      <p class="hero-text" *ngIf="!isAuthenticated">
+        Explore the geological layers of your code. Map, analyze, and collaborate with our developer toolkit.
+      </p>
+      <p class="hero-text" *ngIf="isAuthenticated">
+        Continue your geological coding journey and explore your strata vaults.
+      </p>
+    </section>
+    
+    <!-- Geological Concepts Section -->
+    <section class="geology-section animate-fade-in">
+      <h2 class="section-title">Understanding Code Geology</h2>
+      <p class="section-description">
+        CodeStrata uses geological concepts to visualize and organize code layers for better understanding and collaboration.
+      </p>
+      
+      <div class="geology-grid">
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Strata</h3>
+            <mat-icon color="primary">layers</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>Distinct layers of code that serve specific purposes, similar to rock layers in geology. Each stratum represents a functional component or feature in your codebase.</p>
+          </div>
+        </div>
+        
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Lithosphere</h3>
+            <mat-icon color="primary">public</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>The foundational structure of your application, containing the core functionality and architectural components that everything else builds upon.</p>
+          </div>
+        </div>
+        
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Excavation</h3>
+            <mat-icon color="primary">construction</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>The process of discovering and exploring code patterns and structures, digging into the codebase to understand its composition and relationships.</p>
+          </div>
+        </div>
+        
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Formations</h3>
+            <mat-icon color="primary">view_quilt</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>Groups of related code components that work together to provide specific functionality, similar to geological formations created over time.</p>
+          </div>
+        </div>
+        
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Erosion</h3>
+            <mat-icon color="primary">warning</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>The degradation of code quality over time due to technical debt, changing requirements, or inconsistent practices that need to be addressed.</p>
+          </div>
+        </div>
+        
+        <div class="geology-card strata-card">
+          <div class="strata-card-header">
+            <h3>Seismic Activity</h3>
+            <mat-icon color="primary">swap_horiz</mat-icon>
+          </div>
+          <div class="strata-card-body">
+            <p>Major changes or refactoring efforts that reshape the codebase landscape, potentially causing ripple effects throughout connected systems.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="feature-grid">
+        <mat-card class="feature-card strata-card">
+          <mat-card-header class="strata-card-header">
+            <mat-icon color="primary">school</mat-icon>
+            <mat-card-title>Learn</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="strata-card-body">
+            <p>Access structured learning paths and tutorials designed to help you grow as a developer.</p>
+          </mat-card-content>
+          <mat-card-actions class="strata-card-footer">
+            <button mat-raised-button color="primary" class="btn btn-primary" (click)="isAuthenticated ? navigateToProfile() : register()">
+              <mat-icon>{{ isAuthenticated ? 'person' : 'arrow_forward' }}</mat-icon>
+              {{ isAuthenticated ? 'View Profile' : 'Get Started' }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="feature-card strata-card">
+          <mat-card-header class="strata-card-header">
+            <mat-icon color="primary">groups</mat-icon>
+            <mat-card-title>Collaborate</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="strata-card-body">
+            <p>Work on real projects with other developers and build your portfolio together.</p>
+          </mat-card-content>
+          <mat-card-actions class="strata-card-footer">
+            <button mat-raised-button color="primary" class="btn btn-primary" (click)="isAuthenticated ? navigateToVaults() : register()">
+              <mat-icon>{{ isAuthenticated ? 'folder' : 'person_add' }}</mat-icon>
+              {{ isAuthenticated ? 'My Vaults' : 'Join Now' }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="feature-card strata-card">
+          <mat-card-header class="strata-card-header">
+            <mat-icon color="primary">trending_up</mat-icon>
+            <mat-card-title>Grow</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="strata-card-body">
+            <p>Track your progress, earn badges, and showcase your achievements in the developer community.</p>
+          </mat-card-content>
+          <mat-card-actions class="strata-card-footer">
+            <button mat-raised-button color="primary" class="btn btn-primary" (click)="isAuthenticated ? navigateToProfile() : register()">
+              <mat-icon>rocket_launch</mat-icon>
+              {{ isAuthenticated ? 'View Progress' : 'Start Free' }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </section>
+
+    <!-- Call to Action Section for non-authenticated users -->
+    <section class="cta-section animate-fade-in" *ngIf="!isAuthenticated">
+      <mat-card class="cta-card">
+        <mat-card-content>
+          <h2 class="text-shadow">Ready to Start Your Journey?</h2>
+          <div class="cta-buttons">
+            <button mat-raised-button color="accent" class="btn btn-md" (click)="register()">
+              <mat-icon>person_add</mat-icon>
+              Create Account
+            </button>
+            <button mat-stroked-button class="btn btn-md" (click)="login()">
+              <mat-icon>login</mat-icon>
+              Sign In
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </section>
+    
+    <!-- Role-based Dashboard Section for authenticated users -->
+    <section class="cta-section animate-fade-in" *ngIf="isAuthenticated">
+      <mat-card class="cta-card">
+        <mat-card-content>
+          <h2 class="text-shadow">Your Dashboards</h2>
+          <p *ngIf="userRole" class="role-text">Welcome to your {{ userRole }} dashboard</p>
+          <div class="cta-buttons">
+            <ng-container *ngIf="userRole === 'student'">
+              <button mat-raised-button color="primary" class="btn btn-md" routerLink="/student">
+                <mat-icon>school</mat-icon>
+                Student Dashboard
+              </button>
+            </ng-container>
+            
+            <ng-container *ngIf="userRole === 'instructor' || userRole === 'admin'">
+              <button mat-raised-button color="primary" class="btn btn-md" routerLink="/instructor">
+                <mat-icon>assignment</mat-icon>
+                Instructor Dashboard
+              </button>
+            </ng-container>
+            
+            <button mat-stroked-button color="accent" class="btn btn-md" routerLink="/vaults">
+              <mat-icon>folder</mat-icon>
+              My Vaults
+            </button>
+            
+            <button mat-stroked-button class="btn btn-md" routerLink="/profile">
+              <mat-icon>person</mat-icon>
+              Profile
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </ng-container>
+</div>

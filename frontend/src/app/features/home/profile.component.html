@@ -1,0 +1,62 @@
+<div class="profile-container">
+  <h1 class="welcome-message" *ngIf="authService.user$ | async as user">
+    Welcome back, {{ user.username }}!
+  </h1>
+  <div class="feature-grid">
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <mat-card-title>Your Projects</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>View and manage your current projects</p>
+        <div class="card-stats" *ngIf="!isLoading">
+          <span>Active Vaults: {{ vaultCount }}</span>
+        </div>
+        <div *ngIf="isLoading" class="loading-indicator">
+          <p>Loading your vaults...</p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="viewProjects()">View Projects</button>
+        <button mat-stroked-button color="primary" (click)="createVault()">Create New</button>
+      </mat-card-actions>
+    </mat-card>
+  
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <mat-card-title>Learning Path</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="hasLearningPlan">
+          <p>Track your progress and continue learning</p>
+          <mat-progress-bar mode="determinate" value="65"></mat-progress-bar>
+          <span class="progress-text">65% Complete</span>
+        </div>
+        <div *ngIf="!hasLearningPlan">
+          <p>You haven't started a learning path yet. Start one now to track your progress!</p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="startLearningPlan()">
+          {{ hasLearningPlan ? 'Continue Learning' : 'Start Learning Plan' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  
+    <mat-card class="feature-card">
+      <mat-card-header>
+        <mat-card-title>Community</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Connect with other developers</p>
+        <div class="card-stats">
+          <span>Online: 42</span>
+          <span>Posts: 156</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" routerLink="/community">Join Discussion</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

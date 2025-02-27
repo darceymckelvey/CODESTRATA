@@ -1,0 +1,504 @@
+/* App Container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidenav Container */
+.strata-container {
+  height: 100%;
+  min-height: 100vh;
+}
+
+/* Sidenav Styling */
+.strata-sidenav {
+  width: 280px;
+  background: linear-gradient(135deg, var(--strata-primary-dark) 0%, var(--strata-primary) 100%);
+  color: white;
+  border-right: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidenav-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 24px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.05));
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Create strata-like layers in the header */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, #3e8ed0, transparent);
+  }
+}
+
+.sidenav-logo {
+  margin-bottom: 16px;
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  color: white !important;
+  position: relative;
+}
+
+.sidenav-logo .code-part {
+  color: white !important;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.sidenav-logo .strata-part {
+  color: var(--strata-accent) !important;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.sidenav-logo .code-part::after {
+  content: '>';
+  color: var(--strata-accent) !important;
+  margin: 0 1px;
+  font-weight: 700;
+  animation: cursor-blink 1.5s step-end infinite;
+}
+
+.sidenav-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  font-family: 'Fira Code', monospace;
+}
+
+.sidenav-footer {
+  padding: 16px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: auto;
+  text-align: center;
+}
+
+.sidenav-footer p {
+  margin: 0;
+}
+
+.version {
+  font-size: 0.75rem;
+  margin-top: 5px;
+}
+
+/* Nav List Styling */
+mat-nav-list a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0 8px;
+  border-radius: 8px;
+  height: 48px;
+}
+
+mat-nav-list a mat-icon {
+  margin-right: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+mat-nav-list a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+mat-nav-list a:hover mat-icon {
+  color: white;
+}
+
+mat-nav-list a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 500;
+}
+
+mat-nav-list a.active mat-icon {
+  color: white;
+}
+
+.logout-item {
+  color: var(--strata-warn-light) !important;
+}
+
+/* Header/Toolbar Styling */
+.strata-header {
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.strata-header mat-toolbar {
+  background-color: transparent;
+  height: 64px;
+  padding: 0;
+}
+
+.toolbar-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.menu-button {
+  margin-right: 16px;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--strata-text-primary);
+}
+
+.toolbar-logo {
+  height: 32px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.strata-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--strata-primary);
+  font-family: 'Fira Code', monospace;
+  letter-spacing: -0.025em;
+  position: relative;
+  padding-right: 10px;
+  
+  /* Create a code cursor effect */
+  &::after {
+    content: '|';
+    position: absolute;
+    right: 0;
+    top: 0;
+    animation: cursor-blink 1.2s step-end infinite;
+    opacity: 0;
+    color: var(--strata-accent);
+  }
+  
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: var(--strata-text-secondary);
+  padding: 0 16px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--strata-primary);
+}
+
+.nav-text {
+  margin-left: 4px;
+}
+
+.register-button {
+  padding: 0 20px;
+  border-radius: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.logout-button {
+  border-radius: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+
+/* Content Styling */
+.strata-content {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px - 200px); /* Adjusted for header and footer */
+}
+
+/* Footer Styling */
+.strata-footer {
+  background-color: var(--strata-bg-light);
+  color: var(--strata-text-secondary);
+  padding: 40px 20px 20px;
+  margin-top: auto;
+  font-family: 'Fira Code', monospace;
+  position: relative;
+  
+  /* Create geological strata effect in footer */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 6px;
+    background: 
+      linear-gradient(90deg, 
+        var(--strata-primary-dark) 0%, 
+        var(--strata-primary-dark) 20%, 
+        var(--strata-primary) 20.01%, 
+        var(--strata-primary) 40%, 
+        var(--strata-accent) 40.01%, 
+        var(--strata-accent) 60%, 
+        var(--strata-primary-light) 60.01%, 
+        var(--strata-primary-light) 80%,
+        var(--strata-primary-dark) 80.01%,
+        var(--strata-primary-dark) 100%
+      );
+    opacity: 0.8;
+  }
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  gap: 40px;
+}
+
+.footer-brand {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-logo {
+  font-size: 24px;
+  margin-bottom: 16px;
+  
+  .code-part::after {
+    color: var(--strata-accent);
+  }
+}
+
+.footer-tagline {
+  opacity: 0.7;
+  margin: 5px 0 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+}
+
+.footer-section {
+  min-width: 150px;
+}
+
+.footer-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--strata-text-primary);
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
+  color: var(--strata-text-secondary);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: var(--strata-primary);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 0.85rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+.footer-social {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-social a {
+  color: var(--strata-text-secondary);
+  transition: color 0.3s;
+}
+
+.footer-social a:hover {
+  color: var(--strata-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .strata-sidenav {
+    width: 250px;
+  }
+  
+  .toolbar-right .nav-text {
+    display: none;
+  }
+  
+  .footer-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .strata-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .strata-title {
+    font-size: 1.2rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+}
+
+/* Geological-themed login and signup buttons */
+/* Geological-themed buttons */
+.strata-login-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.strata-login-btn:hover {
+  border: 1px solid var(--strata-primary);
+  background-color: rgba(59, 83, 117, 0.05);
+}
+
+.strata-login-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--strata-primary), var(--strata-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.strata-login-btn:hover::after {
+  transform: scaleX(1);
+}
+
+.strata-signup-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--strata-primary), var(--strata-accent)) !important;
+  transition: all 0.3s ease;
+  border: none;
+  color: white !important;
+}
+
+.strata-signup-btn:hover {
+  background: linear-gradient(135deg, var(--strata-primary-dark), var(--strata-accent-dark)) !important;
+  box-shadow: 0 4px 12px rgba(59, 83, 117, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Keyboard shortcut indicator */
+.shortcut-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  background-color: rgba(59, 83, 117, 0.1);
+  border-radius: 3px;
+  color: var(--strata-primary);
+  font-family: 'Fira Code', monospace;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dark .shortcut-hint {
+  background-color: rgba(75, 159, 224, 0.1);
+  color: var(--strata-accent-light);
+}
+
+/* Show shortcuts on hover */
+*:hover > .shortcut-hint {
+  opacity: 0.8;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--strata-accent);
+  color: white;
+  padding: 8px 12px;
+  z-index: 1000;
+  transition: top 0.3s;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}

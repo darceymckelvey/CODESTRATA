@@ -1,0 +1,177 @@
+// Professional Color Palette - Geological Theme
+$primary-color: #2d3f63; // Deep slate blue (like bedrock)
+$primary-light: #4c6085; 
+$primary-dark: #1e2c4a;
+$secondary-color: #5d6b7c; // Medium slate (like shale)
+$accent-color: #3e8ed0; // Bright blue (like aquamarine)
+$success-color: #38b677; // Green (like malachite)
+$warning-color: #eab308; // Amber (like amber)
+$danger-color: #dc3545; // Red (like ruby)
+$info-color: #3d9cf5; // Light blue (like turquoise)
+
+// Neutral colors (like sedimentary layers)
+$text-primary: #212b36; // Almost black (like obsidian)
+$text-secondary: #4e5d6c; // Dark gray (like slate)
+$text-tertiary: #637381; // Medium gray (like limestone)
+$background-light: #f8fafc; // Whitish (like chalk)
+$background-dark: #1a202c; // Dark (like coal)
+$surface-color: #ffffff; // Pure white (like quartz)
+$border-color: #e2e8f0; // Light gray (like sandstone)
+
+// Typography
+$font-family-base: 'Fira Code', 'Courier New', monospace;
+$font-family-heading: 'Fira Code', 'Courier New', monospace;
+$font-family-code: 'Fira Code', 'Courier New', monospace;
+$font-size-base: 15px; // Slightly smaller for monospace readability
+$line-height-base: 1.6; // Increased for better readability with monospace
+
+// Spacing
+$spacing-xxs: 0.25rem; // 4px
+$spacing-xs: 0.5rem;   // 8px
+$spacing-sm: 0.75rem;  // 12px
+$spacing-md: 1rem;     // 16px
+$spacing-lg: 1.5rem;   // 24px
+$spacing-xl: 2rem;     // 32px
+$spacing-xxl: 3rem;    // 48px
+
+// Border Radius
+$border-radius-sm: 0.25rem;  // 4px
+$border-radius-md: 0.375rem; // 6px
+$border-radius-lg: 0.5rem;   // 8px
+$border-radius-xl: 1rem;     // 16px
+
+// Box Shadow
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// Geological Theme Custom Variables
+$stratum-primary: $primary-color;
+$stratum-secondary: $secondary-color;
+$fossil-accent: $accent-color;
+$erosion-warning: $warning-color;
+$erosion-danger: $danger-color;
+$bedrock-surface: $surface-color;
+$sediment-light: $background-light;
+$core-text: $text-primary;
+$stratum-shadow: $shadow-md;
+
+// CSS Variables for Component Styling
+:root {
+  // Colors
+  --strata-primary: #{$primary-color};
+  --strata-primary-light: #{$primary-light};
+  --strata-primary-dark: #{$primary-dark};
+  --strata-secondary: #{$secondary-color};
+  --strata-accent: #{$accent-color};
+  --strata-success: #{$success-color};
+  --strata-warning: #{$warning-color};
+  --strata-danger: #{$danger-color};
+  --strata-warn: #{$danger-color};
+  --strata-warn-light: #{lighten($danger-color, 15%)};
+  
+  // Text colors
+  --strata-text-primary: #{$text-primary};
+  --strata-text-secondary: #{$text-secondary};
+  --strata-text-white: white;
+  
+  // Background colors
+  --strata-bg-primary: #{$primary-color};
+  --strata-bg-light: #{$background-light};
+  --strata-bg-white: white;
+  
+  // Spacing
+  --strata-space-xxs: #{$spacing-xxs};
+  --strata-space-xs: #{$spacing-xs};
+  --strata-space-sm: #{$spacing-sm};
+  --strata-space-md: #{$spacing-md};
+  --strata-space-lg: #{$spacing-lg};
+  --strata-space-xl: #{$spacing-xl};
+  --strata-space-xxl: #{$spacing-xxl};
+  
+  // Border radius
+  --strata-radius-sm: #{$border-radius-sm};
+  --strata-radius-md: #{$border-radius-md};
+  --strata-radius-lg: #{$border-radius-lg};
+  --strata-radius-xl: #{$border-radius-xl};
+  
+  // Shadows
+  --strata-shadow-sm: #{$shadow-sm};
+  --strata-shadow-md: #{$shadow-md};
+  --strata-shadow-lg: #{$shadow-lg};
+  --strata-shadow-xl: #{$shadow-xl};
+  
+  // Typography
+  --strata-font-family: #{$font-family-base};
+  --strata-font-size-base: #{$font-size-base};
+  --strata-line-height: #{$line-height-base};
+}
+
+// Mixins
+@mixin elevation($level) {
+  @if $level == 1 {
+    box-shadow: $shadow-sm;
+  } @else if $level == 2 {
+    box-shadow: $shadow-md;
+  } @else if $level == 3 {
+    box-shadow: $shadow-lg;
+  } @else {
+    box-shadow: $shadow-xl;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-container {
+  background-color: $surface-color;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  @include elevation(2);
+}
+
+// Custom Button Styles
+@mixin primary-button {
+  background-color: $primary-color;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $border-radius-md;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $primary-light;
+  }
+
+  &:active {
+    background-color: $primary-dark;
+  }
+
+  &:disabled {
+    background-color: $secondary-color;
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+// Root Variables for global use
+:root {
+  --primary-color: #{$primary-color};
+  --primary-light: #{$primary-light};
+  --primary-dark: #{$primary-dark};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --danger-color: #{$danger-color};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --background-light: #{$background-light};
+  --surface-color: #{$surface-color};
+  --border-color: #{$border-color};
+}

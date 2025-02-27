@@ -1,0 +1,217 @@
+<div class="app-container min-h-screen flex flex-col">
+  <!-- Modern Navigation Sidebar -->
+  <mat-sidenav-container class="flex-1">
+    <mat-sidenav #sidenav mode="over" class="bg-white dark:bg-strata-gray-900 w-72">
+      <a class="sr-only skip-link" href="#main-content">Skip to main content</a>
+      
+      <div class="p-6 border-b border-slate-200 dark:border-strata-gray-700">
+        <div class="text-2xl font-bold mb-1">
+          <span class="text-strata-primary">CODE</span><span class="bg-gradient-to-r from-strata-primary to-strata-accent bg-clip-text text-transparent">STRATA</span>
+        </div>
+        <p class="text-sm text-strata-gray-600 dark:text-strata-gray-400">Explore the geological layers of your code</p>
+      </div>
+      
+      <mat-nav-list class="py-2">
+        <a mat-list-item routerLink="/" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon class="text-strata-primary">home</mat-icon>
+          <span class="ml-3">Home</span>
+        </a>
+        <!-- Show both menu versions, style one as visible and one as invisible -->
+        <div [style.display]="isAuthenticated ? 'block' : 'none'">
+          <a mat-list-item routerLink="/vaults" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">layers</mat-icon>
+            <span class="ml-3">Strata Vaults</span>
+          </a>
+          <a mat-list-item routerLink="/learning" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">school</mat-icon>
+            <span class="ml-3">Learning Center</span>
+          </a>
+          <a mat-list-item routerLink="/community" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">forum</mat-icon>
+            <span class="ml-3">Community</span>
+          </a>
+          <a mat-list-item routerLink="/explore" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">explore</mat-icon>
+            <span class="ml-3">Explore Vaults</span>
+          </a>
+          <!-- Role-specific dashboard links in sidebar -->
+          <a *ngIf="userRole === 'student'" mat-list-item routerLink="/student/dashboard" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">dashboard</mat-icon>
+            <span class="ml-3">Student Dashboard</span>
+          </a>
+          <a *ngIf="userRole === 'instructor'" mat-list-item routerLink="/instructor/dashboard" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">dashboard</mat-icon>
+            <span class="ml-3">Instructor Dashboard</span>
+          </a>
+          <a *ngIf="userRole === 'admin'" mat-list-item routerLink="/admin/dashboard" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-red-500">
+            <mat-icon class="text-red-500">admin_panel_settings</mat-icon>
+            <span class="ml-3">Admin Dashboard</span>
+          </a>
+          
+          <a mat-list-item routerLink="/profile" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">person</mat-icon>
+            <span class="ml-3">Profile</span>
+          </a>
+          <mat-divider class="my-2"></mat-divider>
+          <a mat-list-item (click)="logout()" class="text-strata-danger">
+            <mat-icon class="text-strata-danger">exit_to_app</mat-icon>
+            <span class="ml-3">Logout</span>
+          </a>
+        </div>
+        <div [style.display]="isAuthenticated ? 'none' : 'block'">
+          <a mat-list-item (click)="navigateToLogin()" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">login</mat-icon>
+            <span class="ml-3">Login</span>
+          </a>
+          <a mat-list-item (click)="navigateToRegister()" routerLinkActive="bg-slate-100 dark:bg-strata-gray-800 border-l-4 border-strata-primary">
+            <mat-icon class="text-strata-primary">person_add</mat-icon>
+            <span class="ml-3">Register</span>
+          </a>
+        </div>
+      </mat-nav-list>
+      
+      <!-- Add theme toggle to sidenav -->
+      <div class="p-4 flex justify-between items-center border-t border-slate-200 dark:border-strata-gray-700">
+        <div class="flex items-center text-sm text-strata-gray-600 dark:text-strata-gray-400">
+          <mat-icon class="mr-2 text-strata-gray-500 dark:text-strata-gray-400">brightness_4</mat-icon>
+          <span>Theme Mode</span>
+        </div>
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+      
+      <div class="absolute bottom-0 left-0 right-0 p-4 text-center text-sm text-strata-gray-500 dark:text-strata-gray-400 border-t border-slate-200 dark:border-strata-gray-700">
+        <p>&copy; 2025 CodeStrata</p>
+        <p class="text-xs mt-1">v1.0.2</p>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="bg-slate-50 dark:bg-strata-gray-900">
+      <!-- Modern Header/Navbar -->
+      <header class="bg-white dark:bg-strata-gray-800 shadow-sm border-b border-slate-200 dark:border-strata-gray-700 sticky top-0 z-10">
+        <mat-toolbar class="px-4 h-16">
+          <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+              <button mat-icon-button (click)="sidenav.toggle()" class="mr-2" aria-label="Menu">
+                <mat-icon>menu</mat-icon>
+              </button>
+              <a routerLink="/" class="flex items-center">
+                <div class="text-xl font-bold">
+                  <span class="text-strata-primary">CODE</span><span class="bg-gradient-to-r from-strata-primary to-strata-accent bg-clip-text text-transparent">STRATA</span>
+                </div>
+              </a>
+            </div>
+            
+            <div class="flex-1"></div>
+            
+            <div class="flex items-center gap-2">
+              <!-- Theme toggle in navbar -->
+              <app-theme-toggle></app-theme-toggle>
+              
+              <!-- Keyboard shortcuts help removed -->
+              
+              
+              <!-- Use style.display instead of [hidden] -->
+              <div [style.display]="isAuthenticated ? 'inline-flex' : 'none'" class="items-center gap-2">
+                <a mat-button routerLink="/vaults" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">layers</mat-icon>
+                  <span>Vaults</span>
+                </a>
+                <a mat-button routerLink="/learning" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">school</mat-icon>
+                  <span>Learning</span>
+                </a>
+                <a mat-button routerLink="/community" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">forum</mat-icon>
+                  <span>Community</span>
+                </a>
+                <a mat-button routerLink="/explore" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">explore</mat-icon>
+                  <span>Explore</span>
+                </a>
+                <!-- Role-specific dashboard links -->
+                <a *ngIf="userRole === 'student'" mat-button routerLink="/student/dashboard" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">dashboard</mat-icon>
+                  <span>Student Dashboard</span>
+                </a>
+                <a *ngIf="userRole === 'instructor'" mat-button routerLink="/instructor/dashboard" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">dashboard</mat-icon>
+                  <span>Instructor Dashboard</span>
+                </a>
+                <a *ngIf="userRole === 'admin'" mat-button routerLink="/admin/dashboard" class="hidden md:flex items-center relative" color="warn">
+                  <mat-icon class="mr-1">admin_panel_settings</mat-icon>
+                  <span>Admin Dashboard</span>
+                </a>
+                
+                <a mat-button routerLink="/profile" class="hidden md:flex items-center relative">
+                  <mat-icon class="mr-1">person</mat-icon>
+                  <span>Profile</span>
+                </a>
+                <button mat-flat-button color="warn" (click)="logout()" class="btn-primary btn-sm relative">
+                  <mat-icon class="mr-1">power_settings_new</mat-icon>
+                  <span class="hidden md:inline">Logout</span>
+                </button>
+              </div>
+              <div [style.display]="isAuthenticated ? 'none' : 'inline-flex'" class="items-center gap-2">
+                <button mat-button (click)="navigateToLogin()" class="hidden md:flex items-center strata-login-btn">
+                  <mat-icon class="mr-1">login</mat-icon>
+                  <span>Login</span>
+                </button>
+                <button mat-flat-button color="primary" (click)="navigateToRegister()" class="btn-primary btn-sm strata-signup-btn">
+                  <span>Sign Up</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-toolbar>
+      </header>
+
+      <!-- Page Content -->
+      <main id="main-content" class="min-h-[calc(100vh-16rem)] p-4">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Session Warning Component -->
+      <app-session-warning></app-session-warning>
+
+      <!-- Footer -->
+      <footer class="bg-white dark:bg-strata-gray-800 border-t border-slate-200 dark:border-strata-gray-700 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div class="text-2xl font-bold mb-2">
+                <span class="text-strata-primary">CODE</span><span class="bg-gradient-to-r from-strata-primary to-strata-accent bg-clip-text text-transparent">STRATA</span>
+              </div>
+              <p class="text-strata-gray-600 dark:text-strata-gray-400 mb-4">Explore the geological layers of your code</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-3 text-strata-gray-800 dark:text-strata-gray-200">Learn More</h3>
+              <ul class="space-y-2">
+                <li><a routerLink="/about" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">About Geological Code</a></li>
+                <li><a routerLink="/docs" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">Documentation</a></li>
+                <li><a href="https://github.com/codestrata/codestrata" target="_blank" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">GitHub</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-3 text-strata-gray-800 dark:text-strata-gray-200">Resources</h3>
+              <ul class="space-y-2">
+                <li><a routerLink="/community" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">Community</a></li>
+                <li><a routerLink="/blog" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">Blog</a></li>
+                <li><a routerLink="/faq" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light">FAQ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-slate-200 dark:border-strata-gray-700 py-4 px-4">
+          <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-sm text-strata-gray-600 dark:text-strata-gray-400">&copy; 2025 CodeStrata. All rights reserved.</p>
+            <div class="flex items-center gap-4">
+              <a href="https://github.com/codestrata/codestrata" target="_blank" aria-label="GitHub" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light"><mat-icon>code</mat-icon></a>
+              <a href="https://twitter.com/codestrata" target="_blank" aria-label="Twitter" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light"><mat-icon>language</mat-icon></a>
+              <a href="https://discord.gg/codestrata" target="_blank" aria-label="Discord" class="text-strata-gray-600 dark:text-strata-gray-400 hover:text-strata-primary dark:hover:text-strata-primary-light"><mat-icon>forum</mat-icon></a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

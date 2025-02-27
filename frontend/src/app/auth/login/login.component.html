@@ -1,0 +1,97 @@
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<div class="strata-auth-container">
+  <div class="strata-auth-card">
+    <div class="strata-logo-container">
+      <div class="strata-logo-text">
+        <span class="text-strata-primary">CODE</span><span class="bg-gradient-to-r from-strata-primary to-strata-accent bg-clip-text text-transparent">STRATA</span>
+      </div>
+    </div>
+    
+    <h1 class="strata-auth-title" id="main-content">Welcome Back</h1>
+    <p class="strata-auth-subtitle">Explore the geological layers of your code</p>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="strata-loading-container">
+      <mat-spinner diameter="40" class="strata-spinner"></mat-spinner>
+      <p class="strata-loading-text">Signing in...</p>
+    </div>
+    
+    <!-- Auth form -->
+    <ng-container *ngIf="!loading">
+      <form *ngIf="formInitialized" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="strata-auth-form">
+        
+        <!-- Error message -->
+        <div *ngIf="error" class="strata-error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{error}}</span>
+        </div>
+        
+        <!-- Email field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" formControlName="email" required 
+                 aria-describedby="email-hint" autocomplete="email">
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="loginForm?.get('email')?.touched && loginForm?.get('email')?.errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="loginForm?.get('email')?.touched && loginForm?.get('email')?.errors?.['email']">Please enter a valid email</mat-error>
+          <mat-hint id="email-hint">Enter the email you registered with</mat-hint>
+        </mat-form-field>
+        
+        <!-- Password field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required
+                 aria-describedby="password-hint" autocomplete="current-password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button"
+                  [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+                  [attr.aria-pressed]="!hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm?.get('password')?.touched && loginForm?.get('password')?.errors?.['required']">Password is required</mat-error>
+          <mat-hint id="password-hint">Enter your password</mat-hint>
+        </mat-form-field>
+        
+        <!-- Remember/Forgot options -->
+        <div class="strata-form-links">
+          <mat-checkbox color="primary" formControlName="rememberMe">Remember me</mat-checkbox>
+          <a routerLink="/auth/reset-password" class="strata-form-link">Forgot password?</a>
+        </div>
+        
+        <!-- Login button -->
+        <button mat-raised-button color="primary" type="submit" 
+                [disabled]="loading || (loginForm && loginForm.invalid)" 
+                class="strata-auth-button" 
+                (keydown.enter)="onSubmit()">
+          <mat-spinner diameter="20" *ngIf="loading" class="strata-spinner"></mat-spinner>
+          <span *ngIf="!loading">Sign In</span>
+        </button>
+        
+        <!-- OR divider -->
+        <div class="strata-divider">
+          <span>OR</span>
+        </div>
+        
+        <!-- GitHub login -->
+        <button mat-stroked-button type="button" (click)="loginWithGithub()" 
+                class="strata-github-button" 
+                aria-label="Continue with GitHub">
+          <fa-icon [icon]="githubIcon" class="strata-github-icon"></fa-icon>
+          <span>Continue with GitHub</span>
+        </button>
+        
+        <!-- Sign up link -->
+        <div class="strata-account-link">
+          Don't have an account? <a routerLink="/register" tabindex="0">Sign up</a>
+        </div>
+      </form>
+    </ng-container>
+    
+    <!-- General error message outside form -->
+    <div *ngIf="errorMessage" class="strata-error-message">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{errorMessage}}</span>
+    </div>
+  </div>
+</div>

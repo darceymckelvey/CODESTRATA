@@ -1,0 +1,23 @@
+# This file is used by the build system to adjust CSS and JS output to support the specified browsers.
+# For additional information regarding the format and rule options, please see:
+# https://github.com/browserslist/browserslist#queries
+
+# You can see what browsers were selected by your queries by running:
+#   npx browserslist
+
+# Supported browsers for CodeStrata application
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Edge versions
+last 2 Safari versions
+last 2 iOS versions
+last 2 Android versions
+not IE 11 # Angular no longer supports IE
+not dead # Exclude browsers with official support ended
+
+# For development, we use a less restrictive list to enhance dev experience
+# Note that this will include ES2022+ features, which is what Angular CLI targets by default
+[development]
+last 1 chrome version
+last 1 firefox version
+last 1 safari version

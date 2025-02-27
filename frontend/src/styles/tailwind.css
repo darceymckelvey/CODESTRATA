@@ -1,0 +1,228 @@
+@import './global.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Base styles */
+  html, body {
+    @apply h-full w-full font-sans text-strata-gray-800;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-slate-50;
+    background-image: 
+      linear-gradient(to bottom, transparent 0%, rgba(245, 247, 250, 0.8) 100%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232d3f63' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+  
+  .dark body {
+    @apply bg-strata-gray-900;
+    background-image: 
+      linear-gradient(to bottom, transparent 0%, rgba(17, 24, 39, 0.8) 100%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233e8ed0' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
+  /* Heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium text-strata-gray-900 dark:text-strata-gray-50;
+  }
+}
+
+@layer components {
+  /* Page container */
+  .page-container {
+    @apply w-full max-w-7xl mx-auto p-4 sm:p-6;
+  }
+
+  /* Card component */
+  .strata-card {
+    @apply bg-white dark:bg-strata-gray-800 rounded-lg shadow-sm border border-slate-200 dark:border-strata-gray-700 overflow-hidden;
+  }
+
+  .strata-card-header {
+    @apply px-6 py-4 border-b border-slate-200 dark:border-strata-gray-700 flex items-center justify-between;
+  }
+
+  .strata-card-body {
+    @apply p-6;
+  }
+
+  .strata-card-footer {
+    @apply px-6 py-4 border-t border-slate-200 dark:border-strata-gray-700;
+  }
+
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors 
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-strata-primary hover:bg-strata-primary-dark text-white 
+           focus-visible:ring-strata-primary dark:focus-visible:ring-strata-primary-light;
+  }
+
+  .btn-secondary {
+    @apply bg-strata-secondary hover:bg-strata-secondary-dark text-white 
+           focus-visible:ring-strata-secondary;
+  }
+
+  .btn-accent {
+    @apply bg-strata-accent hover:bg-strata-accent-dark text-white 
+           focus-visible:ring-strata-accent;
+  }
+
+  .btn-outline {
+    @apply border border-slate-300 dark:border-strata-gray-700 bg-transparent hover:bg-slate-100 
+           dark:hover:bg-strata-gray-800 text-strata-gray-700 dark:text-strata-gray-300
+           focus-visible:ring-slate-400 dark:focus-visible:ring-strata-gray-600;
+  }
+
+  .btn-sm {
+    @apply h-8 px-3 rounded;
+  }
+
+  .btn-md {
+    @apply h-10 px-4 py-2;
+  }
+
+  .btn-lg {
+    @apply h-12 px-6 rounded-md;
+  }
+
+  /* Form controls */
+  .form-control {
+    @apply block w-full rounded-md border border-slate-300 dark:border-strata-gray-700 
+           bg-white dark:bg-strata-gray-800 px-3 py-2 text-sm
+           placeholder:text-slate-400 dark:placeholder:text-strata-gray-500
+           focus:outline-none focus:ring-2 focus:ring-strata-primary dark:focus:ring-strata-primary-light
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-strata-gray-700 dark:text-strata-gray-300 mb-1;
+  }
+
+  .form-hint {
+    @apply mt-1 text-sm text-strata-gray-500 dark:text-strata-gray-400;
+  }
+
+  .form-error {
+    @apply mt-1 text-sm text-strata-danger;
+  }
+
+  /* Table styles */
+  .strata-table {
+    @apply w-full text-sm text-left text-strata-gray-700 dark:text-strata-gray-300;
+  }
+
+  .strata-table thead {
+    @apply bg-slate-50 dark:bg-strata-gray-700 text-xs uppercase text-strata-gray-700 dark:text-strata-gray-300;
+  }
+
+  .strata-table th {
+    @apply px-6 py-3 font-medium;
+  }
+
+  .strata-table td {
+    @apply px-6 py-4 border-t border-slate-200 dark:border-strata-gray-700;
+  }
+
+  .strata-table tr:hover {
+    @apply bg-slate-50 dark:bg-strata-gray-700/50;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-strata-primary-light/10 text-strata-primary-dark dark:bg-strata-primary-dark/30 dark:text-strata-primary-light;
+  }
+
+  .badge-secondary {
+    @apply bg-strata-secondary/10 text-strata-secondary-dark dark:bg-strata-secondary-dark/30 dark:text-strata-secondary-light;
+  }
+
+  .badge-success {
+    @apply bg-strata-success/10 text-strata-success-dark dark:bg-strata-success-dark/30 dark:text-strata-success-light;
+  }
+
+  .badge-danger {
+    @apply bg-strata-danger/10 text-strata-danger-dark dark:bg-strata-danger-dark/30 dark:text-strata-danger-light;
+  }
+
+  .badge-warning {
+    @apply bg-strata-warning/10 text-strata-warning-dark dark:bg-strata-warning-dark/30 dark:text-strata-warning-light;
+  }
+
+  .badge-info {
+    @apply bg-strata-info/10 text-strata-info-dark dark:bg-strata-info-dark/30 dark:text-strata-info-light;
+  }
+
+  /* Angular Material style overrides */
+  .mat-mdc-button.mat-primary {
+    @apply text-strata-primary hover:bg-strata-primary/10 dark:text-strata-primary-light dark:hover:bg-strata-primary-dark/30;
+  }
+
+  .mat-mdc-raised-button.mat-primary {
+    @apply bg-strata-primary text-white hover:bg-strata-primary-dark dark:bg-strata-primary dark:hover:bg-strata-primary-light;
+  }
+
+  .mat-mdc-card {
+    @apply border border-slate-200 dark:border-strata-gray-700 shadow-sm;
+  }
+
+  .mat-mdc-card-header {
+    @apply border-b border-slate-200 dark:border-strata-gray-700 px-6 py-4;
+  }
+
+  .mat-mdc-card-content {
+    @apply p-6;
+  }
+
+  .mat-mdc-card-actions {
+    @apply px-6 py-4 border-t border-slate-200 dark:border-strata-gray-700;
+  }
+}
+
+@layer utilities {
+  /* Custom utilities */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+} 

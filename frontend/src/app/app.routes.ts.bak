@@ -1,0 +1,77 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from './auth/guards/auth.guard';
+
+export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+
+  // Direct routes for login and register
+  { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+  { path: 'register', loadComponent: () => import('./auth/register/register.component').then(m => m.RegisterComponent) },
+  
+  // Auth routes in a dedicated module for better organization
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+
+  // Direct routes for GitHub callback for OAuth flow
+  {
+    path: 'auth/github-callback',
+    loadComponent: () =>
+      import('./auth/github-callback/github-callback.component').then(
+        (m) => m.GithubCallbackComponent
+      ),
+  },
+  
+  // Authentication-required routes
+  {
+    path: 'vaults',
+    loadComponent: () =>
+      import('./features/user-strata-vaults/user-strata-vaults.component').then(
+        (m) => m.UserStrataVaultsComponent
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'vaults/new',
+    loadComponent: () =>
+      import('./features/user-strata-vaults/user-strata-vaults.component').then(
+        (m) => m.UserStrataVaultsComponent
+      ),
+    canActivate: [AuthGuard],
+    data: { action: 'create' }
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/user-strata-vaults/user-strata-vaults.component').then(
+        (m) => m.UserStrataVaultsComponent
+      ),
+    canActivate: [AuthGuard],
+ // Home and profile as standalone components\ { \ path: "home", \ loadComponent: () => import("./features/home/home.component").then(m => m.HomeComponent)\ },\ {\ path: "profile",\ loadComponent: () => import("./features/home/profile.component").then(m => m.ProfileComponent),\ canActivate: [AuthGuard]\ },
+  },
+  
+  // Forgot password route handled in login for now
+  //{ path: 'forgot-password', loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+  
+  // Fallback route
+  { path: '**', redirectTo: '/home' },
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, {
+      // Preload all modules in the background for better UX
+      preloadingStrategy: PreloadAllModules,
+      // Enable eager loading for faster initial navigation
+      initialNavigation: 'enabledBlocking',
+      // Add scroll position restoration
+      scrollPositionRestoration: 'enabled',
+      // Enable tracing for debugging in development
+      enableTracing: false
+    })
+  ],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

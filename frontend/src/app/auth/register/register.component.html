@@ -1,0 +1,153 @@
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<div class="strata-auth-container">
+  <div class="strata-auth-card">
+    <div class="strata-logo-container">
+      <div class="strata-logo-text">
+        <span class="text-strata-primary">CODE</span><span class="bg-gradient-to-r from-strata-primary to-strata-accent bg-clip-text text-transparent">STRATA</span>
+      </div>
+    </div>
+    
+    <h1 class="strata-auth-title" id="main-content">Create Your Account</h1>
+    <p class="strata-auth-subtitle">Join us to explore the geological layers of your code</p>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="strata-loading-container">
+      <mat-spinner diameter="40" class="strata-spinner"></mat-spinner>
+      <p class="strata-loading-text">Creating your account...</p>
+    </div>
+    
+    <!-- Registration form -->
+    <ng-container *ngIf="!loading">
+      <form *ngIf="formInitialized" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="strata-auth-form">
+        
+        <!-- Error message -->
+        <div *ngIf="error" class="strata-error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{error}}</span>
+        </div>
+        
+        <!-- Username field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Username</mat-label>
+          <input matInput type="text" formControlName="username" required 
+                 aria-describedby="username-hint" autocomplete="username">
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="submitted && f['username'].errors?.['required']">Username is required</mat-error>
+          <mat-error *ngIf="submitted && f['username'].errors?.['minlength']">
+            Username must be at least 3 characters
+          </mat-error>
+          <mat-hint id="username-hint">Choose a unique username</mat-hint>
+        </mat-form-field>
+        
+        <!-- Email field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" formControlName="email" required 
+                 aria-describedby="email-hint" autocomplete="email">
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="submitted && f['email'].errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="submitted && f['email'].errors?.['email']">Please enter a valid email</mat-error>
+          <mat-hint id="email-hint">We'll never share your email</mat-hint>
+        </mat-form-field>
+        
+        <!-- Password field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required
+                 aria-describedby="password-hint" autocomplete="new-password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button"
+                  [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+                  [attr.aria-pressed]="!hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="submitted && f['password'].errors?.['required']">Password is required</mat-error>
+          <mat-error *ngIf="submitted && f['password'].errors?.['minlength']">
+            Password must be at least 6 characters
+          </mat-error>
+          <mat-hint id="password-hint">Create a strong password</mat-hint>
+        </mat-form-field>
+        
+        <!-- Confirm Password field -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" required
+                 aria-describedby="confirm-password-hint" autocomplete="new-password">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button"
+                  [attr.aria-label]="hideConfirmPassword ? 'Show password' : 'Hide password'"
+                  [attr.aria-pressed]="!hideConfirmPassword">
+            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="submitted && f['confirmPassword'].errors?.['required']">
+            Please confirm your password
+          </mat-error>
+          <mat-error *ngIf="submitted && f['confirmPassword'].errors?.['passwordMismatch']">
+            Passwords do not match
+          </mat-error>
+          <mat-hint id="confirm-password-hint">Re-enter your password</mat-hint>
+        </mat-form-field>
+        
+        <!-- Role selection -->
+        <mat-form-field appearance="outline" class="strata-form-field">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role" aria-describedby="role-hint">
+            <mat-option *ngFor="let role of availableRoles" [value]="role.value">
+              {{ role.label }}
+            </mat-option>
+            <mat-option [value]="adminRoleInfo.value">
+              {{ adminRoleInfo.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-error *ngIf="submitted && f['role'].errors?.['required']">
+            Please select a role
+          </mat-error>
+          <mat-hint id="role-hint">Choose your account type</mat-hint>
+        </mat-form-field>
+        
+        <!-- Admin Request (conditional) -->
+        <ng-container *ngIf="f['role'].value === 'admin'">
+          <mat-form-field appearance="outline" class="strata-form-field">
+            <mat-label>Reason for Requesting Admin Access</mat-label>
+            <textarea matInput formControlName="adminRequestReason" rows="3"
+                      placeholder="Please explain why you need administrator access"
+                      aria-describedby="admin-reason-hint"></textarea>
+            <mat-icon matPrefix>assignment</mat-icon>
+            <mat-error *ngIf="submitted && f['adminRequestReason'].errors?.['required']">
+              Please provide a reason for requesting admin access
+            </mat-error>
+            <mat-hint id="admin-reason-hint">This request will be reviewed by our team</mat-hint>
+          </mat-form-field>
+        </ng-container>
+        
+        <!-- Terms and Privacy -->
+        <div class="strata-form-links">
+          <mat-checkbox color="primary" formControlName="acceptTerms" required 
+                        [attr.aria-describedby]="'terms-hint'">
+            I agree to the <a href="#" class="strata-form-link">Terms of Service</a> and 
+            <a href="#" class="strata-form-link">Privacy Policy</a>
+          </mat-checkbox>
+          <span id="terms-hint" class="sr-only">You must accept the terms to continue</span>
+        </div>
+        
+        <!-- Register button -->
+        <button mat-raised-button color="primary" type="submit" 
+                [disabled]="loading" 
+                class="strata-auth-button"
+                (keydown.enter)="onSubmit()">
+          <mat-spinner diameter="20" *ngIf="loading" class="strata-spinner"></mat-spinner>
+          <span *ngIf="!loading">Create Account</span>
+        </button>
+        
+        <!-- GitHub signup removed -->
+        
+        <!-- Login link -->
+        <div class="strata-account-link">
+          Already have an account? <a routerLink="/login" tabindex="0">Sign in</a>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

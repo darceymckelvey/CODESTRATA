@@ -1,0 +1,26 @@
+<div class="strata-callback-container">
+  <div class="callback-card">
+    <div class="callback-content" *ngIf="loading">
+      <div class="excavation-spinner">
+        <mat-spinner diameter="40" color="primary"></mat-spinner>
+        <p class="loading-message">{{ loadingMessage }}</p>
+      </div>
+    </div>
+    
+    <div class="callback-content" *ngIf="error">
+      <div class="erosion-icon">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <h2 class="error-title">Authentication Error</h2>
+      <div class="erosion-message">
+        {{ errorMessage }}
+      </div>
+      <div class="stratum-redirect" *ngIf="redirectCountdown > 0">
+        Redirecting in {{ redirectCountdown }} seconds...
+      </div>
+      <button mat-raised-button color="primary" routerLink="/login" class="action-button">
+        Return to Login
+      </button>
+    </div>
+  </div>
+</div>

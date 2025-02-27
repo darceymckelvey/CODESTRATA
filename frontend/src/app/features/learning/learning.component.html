@@ -1,0 +1,107 @@
+<div class="container mx-auto p-4">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Learning Center</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">Enhance your skills with our guided learning paths.</p>
+  </div>
+  
+  <!-- If no active path is selected, show available paths -->
+  <div *ngIf="!activePath" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <mat-card *ngFor="let path of learningPaths" class="hover:shadow-lg transition-shadow duration-300">
+      <mat-card-header>
+        <mat-card-title>{{ path.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="pb-4">
+        <p>{{ path.description }}</p>
+        <mat-progress-bar [value]="path.progress" class="mt-4"></mat-progress-bar>
+        <p class="text-right text-sm mt-1">{{ path.progress }}% Complete</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="startLearningPath(path.id)">
+          {{ path.isActive ? 'Continue' : 'Start' }} Learning
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <!-- If a path is active but no module is selected -->
+  <div *ngIf="activePath && !activeModule" class="learning-path-detail">
+    <div class="flex items-center mb-6">
+      <button mat-icon-button (click)="activePath = null" aria-label="Back">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="text-2xl font-bold ml-2">{{ activePath.title }}</h2>
+    </div>
+    
+    <div class="mb-6">
+      <p class="mb-4">{{ activePath.description }}</p>
+      <mat-progress-bar [value]="activePath.progress" class="mb-2"></mat-progress-bar>
+      <p class="text-right text-sm">{{ activePath.progress }}% Complete</p>
+    </div>
+    
+    <h3 class="text-xl font-semibold mb-4">Modules</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <mat-card *ngFor="let module of activePath.modules" class="hover:shadow-md transition-shadow duration-300">
+        <mat-card-header>
+          <mat-card-title>{{ module.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ module.description }}</p>
+          <mat-progress-bar [value]="module.progress" class="mt-4"></mat-progress-bar>
+          <p class="text-right text-sm mt-1">{{ module.progress }}% Complete</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="selectModule(module.id)">
+            {{ module.isCompleted ? 'Review' : 'Start' }} Module
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  
+  <!-- If a module is active -->
+  <div *ngIf="activePath && activeModule" class="learning-module-detail">
+    <div class="flex items-center mb-6">
+      <button mat-icon-button (click)="activeModule = null" aria-label="Back to modules">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2 class="text-2xl font-bold ml-2">{{ activeModule.title }}</h2>
+        <p class="ml-2 text-gray-600 dark:text-gray-400">{{ activePath.title }}</p>
+      </div>
+    </div>
+    
+    <div class="mb-6">
+      <p class="mb-4">{{ activeModule.description }}</p>
+      <mat-progress-bar [value]="activeModule.progress" class="mb-2"></mat-progress-bar>
+      <p class="text-right text-sm">{{ activeModule.progress }}% Complete</p>
+    </div>
+    
+    <h3 class="text-xl font-semibold mb-4">Lessons</h3>
+    <div class="space-y-4">
+      <mat-card *ngFor="let lesson of activeModule.lessons" 
+                [class.border-green-500]="lesson.isCompleted" 
+                [class.border-l-4]="lesson.isCompleted">
+        <mat-card-header>
+          <mat-icon *ngIf="lesson.isCompleted" class="text-green-500 mr-2">check_circle</mat-icon>
+          <mat-card-title>{{ lesson.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ lesson.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" 
+                  [disabled]="lesson.isCompleted"
+                  (click)="completeLesson(activeModule.id, lesson.id)">
+            {{ lesson.isCompleted ? 'Completed' : 'Mark as Complete' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    
+    <div class="mt-8">
+      <button mat-raised-button color="primary" (click)="activeModule = null">
+        Back to Modules
+      </button>
+    </div>
+  </div>
+</div> 

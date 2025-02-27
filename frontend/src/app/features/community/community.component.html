@@ -1,0 +1,59 @@
+<div class="container mx-auto p-4">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Community Forum</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">Connect with other CodeStrata users and share your experiences.</p>
+  </div>
+  
+  <div class="mb-8 flex justify-between items-center">
+    <button mat-raised-button color="primary" disabled>
+      <mat-icon>add</mat-icon> New Post
+    </button>
+    
+    <div>
+      <span class="text-gray-600 dark:text-gray-400">42 members online</span>
+    </div>
+  </div>
+  
+  <div class="space-y-6">
+    <mat-card *ngFor="let post of posts" class="hover:shadow-lg transition-shadow duration-300">
+      <mat-card-header>
+        <div mat-card-avatar class="bg-indigo-400 flex items-center justify-center text-white rounded-full">
+          {{ post.author.charAt(0) }}
+        </div>
+        <mat-card-title>{{ post.title }}</mat-card-title>
+        <mat-card-subtitle>
+          Posted by {{ post.author }} • {{ formatTimeAgo(post.timestamp) }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="py-4">
+        <p>{{ post.content }}</p>
+      </mat-card-content>
+      
+      <mat-divider></mat-divider>
+      
+      <mat-card-actions class="flex justify-between">
+        <div>
+          <button mat-button color="primary" (click)="likePost(post)">
+            <mat-icon>thumb_up</mat-icon> {{ post.likes }}
+          </button>
+          <button mat-button disabled>
+            <mat-icon>comment</mat-icon> {{ post.comments }}
+          </button>
+        </div>
+        <button mat-button disabled>
+          <mat-icon>share</mat-icon> Share
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <div class="mt-8 text-center">
+    <button mat-raised-button color="primary" disabled>
+      <mat-icon>refresh</mat-icon> Load More
+    </button>
+    <p class="mt-4 text-sm text-gray-500">
+      Feature coming soon! Our community forums are currently under development.
+    </p>
+  </div>
+</div> 
